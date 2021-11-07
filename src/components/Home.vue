@@ -2,7 +2,14 @@
   <Page actionBarHidden="true" backgroundSpanUnderStatusBar="true" class="page">
     <FlexboxLayout class="page">
       <StackLayout class="form">
-        <Label class="header" text="Dashboard"></Label>
+        <GridLayout rows="auto, auto, auto">
+          <StackLayout row="0">
+            <Button :text="'Nuevo Paquete'"></Button>
+          </StackLayout>
+
+          <Label class="header" row="1" text="Dashboard"></Label>
+          <Label class="header" row="2" text="Dashboard"></Label>
+        </GridLayout>
       </StackLayout>
     </FlexboxLayout>
   </Page>
@@ -10,10 +17,10 @@
 
 <script>
 export default {
-    data (){
-        return {}
-    }
-}
+  data() {
+    return {};
+  },
+};
 </script>            
 
 <style scoped>

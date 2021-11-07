@@ -7,3 +7,22 @@
 
 // Global SCSS styling
 // @see https://docs.nativescript.org/ui/styling
+
+
+.page {
+    margin-top: 24;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .btn-primary {
+    height: 50;
+    background-color: #1962eb;
+    border-radius: 5;
+    font-size: 16;
+    font-weight: 600;
+    color: whitesmoke;
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+  }

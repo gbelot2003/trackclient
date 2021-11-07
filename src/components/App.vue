@@ -2,6 +2,7 @@
   <Page actionBarHidden="true" backgroundSpanUnderStatusBar="true" class="page">
     <FlexboxLayout class="page">
       <StackLayout class="form">
+        <Image class="logo" src="~/assets/images/logi_track.jpeg"></Image>
         <Label class="header" text="TrackingHn"></Label>
         <GridLayout rows="auto, auto, auto">
           <StackLayout row="0" class="input-field">
@@ -16,7 +17,7 @@
               :isEnabled="!processing"
             ></TextField>
           </StackLayout>
-
+z
           <StackLayout row="1" class="input-field">
             <TextField
               class="input"
