@@ -6,9 +6,11 @@
   "author": "Gerardo Belot <gbelot2003@hotmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@nativescript/camera": "^5.0.9",
     "@nativescript/core": "^7.0.3",
     "@nativescript/theme": "^2.3.3",
     "axios": "^0.24.0",
+    "nativescript-imagepicker": "^7.1.0",
     "nativescript-vue": "^2.8.1",
     "vuex": "^3.5.1"
   },
