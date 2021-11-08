@@ -6,6 +6,7 @@
   "author": "Gerardo Belot <gbelot2003@hotmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@nativescript-community/drawingpad": "^4.1.0",
     "@nativescript/camera": "^5.0.9",
     "@nativescript/core": "^7.0.3",
     "@nativescript/theme": "^2.3.3",
