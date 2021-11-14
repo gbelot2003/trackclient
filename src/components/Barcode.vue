@@ -77,31 +77,12 @@
             },
           })
           .then((result) => {
-              console.log("--- scanned: " + result.text);
               let that = this; 
+              // Cambiar accion por la necesaria
               that.$store.dispatch('CHANGE_CODE', result.text);
-              console.log("this keeps working");
           }).catch(err => {
             console.log("No scan. " + err);
           });
-            // function (result) {
-            //   console.log("--- scanned: " + result.text);
-            //   let that = this;   
-            //   that.$store.dispatch('CHANGE_CODE', result.text);
-            //   console.log("this keeps working");
-            //   // setTimeout(function () {  
-            //   //   alert({
-            //   //     title: "Scan result",
-            //   //     message:
-            //   //       "Format: " + result.format + ",\nValue: " + result.text,
-            //   //     okButtonText: "OK",
-            //   //   });
-            //   // }, 500);
-            // },
-            // function (errorMessage) {
-            //   console.log("No scan. " + errorMessage);
-            // }
-          // );
       },
     },
     computed:{
