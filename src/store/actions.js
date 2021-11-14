@@ -50,5 +50,19 @@ export default {
     CHANGE_CODE:({ commit }, params) => {
         console.log(params);
         commit('SET_CODE', params);
-    }
+    },
+
+    SEARCH_CODE:({ commit, getters}, params) => {
+        return new Promise((resolve, reject) => {
+            let string = `${server}package-code/${params}`;
+            console.log(string);
+            axios.get(string).then((resp) => {
+                commit('SET_PACKAGE', resp.data);
+                resolve(resp.data);
+            }).catch(err => {
+                reject(err)
+                console.log(err);
+            });
+        });
+    },
 }

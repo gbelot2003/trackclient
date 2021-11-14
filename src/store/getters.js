@@ -21,5 +21,9 @@ export default {
 
     getCode(state) {
         return state.code;
+    },
+
+    getPackage(state) {
+        return state.package
     }
 }

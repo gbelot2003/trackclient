@@ -3,9 +3,16 @@
   <Page>
     <ActionBar title="BarcodeScanner demo"></ActionBar>
 
-    <GridLayout columns="*" rows="auto, auto, auto">
-      <BarcodeScanner
+    <GridLayout columns="*" rows="auto, auto, auto, auto, auto">
+      <Label
         row="0"
+        class="message"
+        text="Check the console log for scanned barcodes"
+        textWrap="true"
+      ></Label>
+
+      <BarcodeScanner
+        row="1"
         height="300"
         formats="QR_CODE, EAN_13, UPC_A"
         beepOnScan="true"
@@ -13,30 +20,33 @@
         preferFrontCamera="false"
         @scanResult="onScanResult"
         v-if="isIOS"
-      />
+      >
+      </BarcodeScanner>
+
       <Button
-        row="1"
+        row="2"
         class="btn btn-primary btn-rounded-sm"
-        text="Scan Barcode"
+        text="back camera, with flip"
         @tap="doScanWithBackCameraWithFlip"
       ></Button>
+      <Button
+        row="3"
+        class="btn btn-primary btn-rounded-sm"
+        text="front camera, no flip"
+        @tap="doScanWithFrontCameraNoFlip"
+      ></Button>
       
-      <StackLayout row="2">
-        <package :item="getPackage"></package>
-      </StackLayout>
+      <Label row="4"  class="message" :text="getPackage.code" />
     </GridLayout>
   </Page>
 </template>
 
 <script>
   import { BarcodeScanner } from "nativescript-barcodescanner";
-  import Package from './Packages/Package.vue';
 
   export default {
-    components: { Package },
     data() {
       return {
-        isIOS: null,
       };
     },
     methods: {
@@ -44,8 +54,10 @@
         console.log(`onScanResult: ${evt.text} (${evt.format})`);
       },
       doScanWithBackCameraWithFlip() {
-        //this.scan(false, true);
-        this.sendCode();
+        this.scan(false, true);
+      },
+      doScanWithFrontCameraNoFlip() {
+        this.scan(true, false);
       },
       scan(preferFrontCamera, showFlipCameraButton) {
         new BarcodeScanner()
@@ -74,9 +86,6 @@
             console.log("No scan. " + err);
           });
       },
-      sendCode(){
-        this.$store.dispatch('SEARCH_CODE', 439224452);
-      }
     },
     computed:{
       getPackage(){

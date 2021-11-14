@@ -5,4 +5,5 @@ export default {
     isLoggedIn: '',
     user: {},
     code: 0,
+    package: {}
 }
