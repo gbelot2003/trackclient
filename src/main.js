@@ -1,8 +1,6 @@
 import Vue from 'nativescript-vue'
 import App from './components/App'
-import Home from './components/Home'
-import Drawpad from './components/Drawpad'
-import Barcode from './components/Barcode'
+import Home from './components/Packages/NewPackage'
 
 import store from './store'
 
@@ -12,6 +10,6 @@ Vue.registerElement('DrawingPad', () => require('@nativescript-community/drawing
 Vue.registerElement('BarcodeScanner', () => require('nativescript-barcodescanner').BarcodeScannerView)
 
 new Vue({
-  render: h => h('frame', [h(Barcode)]),
+  render: h => h('frame', [h(Home)]),
   store,
 }).$start()
