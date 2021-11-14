@@ -4,4 +4,5 @@ export default {
     expires_at: '',
     isLoggedIn: '',
     user: {},
+    code: 0,
 }

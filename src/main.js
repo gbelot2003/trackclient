@@ -12,6 +12,6 @@ Vue.registerElement('DrawingPad', () => require('@nativescript-community/drawing
 Vue.registerElement('BarcodeScanner', () => require('nativescript-barcodescanner').BarcodeScannerView)
 
 new Vue({
+  render: h => h('frame', [h(Barcode)]),
   store,
-  render: h => h('frame', [h(Barcode)])
 }).$start()

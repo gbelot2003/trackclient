@@ -3,7 +3,7 @@
   <Page>
     <ActionBar title="BarcodeScanner demo"></ActionBar>
 
-    <GridLayout columns="*" rows="auto, auto, auto, auto">
+    <GridLayout columns="*" rows="auto, auto, auto, auto, auto">
       <Label
         row="0"
         class="message"
@@ -35,6 +35,8 @@
         text="front camera, no flip"
         @tap="doScanWithFrontCameraNoFlip"
       ></Button>
+      
+      <Label row="4"  class="message" :text="getCodes" />
     </GridLayout>
   </Page>
 </template>
@@ -45,7 +47,6 @@ import { BarcodeScanner } from "nativescript-barcodescanner";
 export default {
   data() {
     return {
-      code: "",
     };
   },
   methods: {
@@ -75,24 +76,39 @@ export default {
             console.log("Scanner closed @ " + new Date().getTime());
           },
         })
-        .then(
-          function (result) {
+        .then((result) => {
             console.log("--- scanned: " + result.text);
-            setTimeout(function () {
-              alert({
-                title: "Scan result",
-                message:
-                  "Format: " + result.format + ",\nValue: " + result.text,
-                okButtonText: "OK",
-              });
-            }, 500);
-          },
-          function (errorMessage) {
-            console.log("No scan. " + errorMessage);
-          }
-        );
+            let that = this; 
+            that.$store.dispatch('CHANGE_CODE', result.text);
+            console.log("this keeps working");
+        }).catch(err => {
+          console.log("No scan. " + err);
+        });
+          // function (result) {
+          //   console.log("--- scanned: " + result.text);
+          //   let that = this;   
+          //   that.$store.dispatch('CHANGE_CODE', result.text);
+          //   console.log("this keeps working");
+          //   // setTimeout(function () {  
+          //   //   alert({
+          //   //     title: "Scan result",
+          //   //     message:
+          //   //       "Format: " + result.format + ",\nValue: " + result.text,
+          //   //     okButtonText: "OK",
+          //   //   });
+          //   // }, 500);
+          // },
+          // function (errorMessage) {
+          //   console.log("No scan. " + errorMessage);
+          // }
+        // );
     },
   },
+  computed:{
+    getCodes(){
+      return this.$store.getters.getCode;
+    }
+  }
 };
 </script>            
 

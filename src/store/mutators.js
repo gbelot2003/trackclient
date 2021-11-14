@@ -20,4 +20,8 @@ export default {
     SET_USER(state, payload) {
         state.user = payload;
     },
+
+    SET_CODE(state, payload) {
+        state.code = payload
+    }
 }

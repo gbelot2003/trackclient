@@ -46,4 +46,9 @@ export default {
             })
         })
     },
+
+    CHANGE_CODE:({ commit }, params) => {
+        console.log(params);
+        commit('SET_CODE', params);
+    }
 }

@@ -18,4 +18,8 @@ export default {
     getUser(state) {
         return state.user;
     },
+
+    getCode(state) {
+        return state.code;
+    }
 }
