@@ -1,0 +1,23 @@
+.cliente {
+    padding-left: 15;
+    padding-bottom: 15;
+    border-bottom: black 2 solid;
+    color: black;
+    
+    .h6 {
+        margin-bottom: 0;
+        padding: 0;
+    }
+
+    .agencia {
+        color: gray;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .seccion {
+        font-size: 10;
+        margin: 0;
+        padding: 0;
+    }
+}

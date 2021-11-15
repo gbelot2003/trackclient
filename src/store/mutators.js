@@ -27,5 +27,17 @@ export default {
 
     SET_PACKAGE(state, payload) {
         state.package = payload;
-    }
+    },
+
+    SET_REMITENTE(state, payload) {
+        state.remitente = payload;
+    },
+
+    SET_DESTINATARIO(state, payload) {
+        state.destinatario = payload;
+    },
+
+    SET_TIPO(state, payload) {
+        state.tipo = payload;
+    },
 }

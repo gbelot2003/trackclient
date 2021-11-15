@@ -1,0 +1,40 @@
+.form {
+    margin-left: 30;
+    margin-right: 30;
+    flex-grow: 2;
+    vertical-align: middle;
+  }
+  .logo {
+    margin-bottom: 12;
+    height: 90;
+    font-weight: bold;
+  }
+  
+  .input-field {
+    margin-bottom: 15;
+  }
+  .input {
+    font-size: 16;
+    placeholder-color: #a8a8a8;
+  }
+  .input:disabled {
+    background-color: white;
+    opacity: 0.5;
+  }
+  
+  .login-label {
+    horizontal-align: center;
+    color: #fffdfb;
+    background-color: #000000;
+    border-radius: 5;
+    padding: 10;
+    font-size: 10;
+  }
+  .sign-up-label {
+    horizontal-align: center;
+    color: #a8123c;
+    background-color: #dae269;
+    border-radius: 5;
+    padding: 10;
+    font-size: 10;
+  }

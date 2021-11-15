@@ -25,5 +25,17 @@ export default {
 
     getPackage(state) {
         return state.package
-    }
+    },
+
+    getRemitente(state) {
+        return state.remitente
+    },
+
+    getDestinatario(state) {
+        return state.destinatario
+    },
+
+    getTipo(state) {
+        return state.tipo
+    },
 }
