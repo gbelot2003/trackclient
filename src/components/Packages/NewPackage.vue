@@ -17,8 +17,8 @@
       </StackLayout>
 
       <StackLayout>
-        <Button text="Remitente" @tap="remitente" v-if="getRemitente.name" />
-        <customers-item v-if="!getRemitente.name"></customers-item>
+        <Button text="Remitente" @tap="remitente" v-if="!getRemitente.name" />
+        <customers-item :item="getRemitente"  v-if="getRemitente.name"></customers-item>
       </StackLayout>
 
       <StackLayout>

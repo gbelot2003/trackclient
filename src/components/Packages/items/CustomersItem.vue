@@ -1,17 +1,32 @@
 <template>
     <StackLayout class="item">
-        <label class="h6 label" text="nombre de cliente"></label>
-        <label class="label" text="080119562355"></label>
+        <label class="h5 title" text="Remitente"></label>
+        <label class="h6 label" :text="item.name"></label>
+        <label class="label" :text="item.identity"></label>
+        <settlement :settlement="item.settlement"></settlement>
+        <section :section="item.section"></section>
     </StackLayout>
 </template>
 
 <script>
+import Settlement from './Settlement.vue'
+import Section from './Section.vue'
+
 export default {
+  components: { Settlement, Section },
     name: 'CustomersItem',
+    props: ['item'],
+    Components: {
+        Settlement, Section
+    }
 }
 </script>
 
 <style scoped>
+    .title {
+        text-align: center;
+    }
+
     .item {
         margin-top:15;
         margin-left: 5;
