@@ -1,13 +1,21 @@
 <template>
   <Page>
     <ActionBar title="Crear Nuevo Cliente">
-      <NavigationButton android.systemIcon="ic_menu_back" @tap="$navigateBack" />
+      <NavigationButton
+        android.systemIcon="ic_menu_back"
+        @tap="$navigateBack"
+      />
     </ActionBar>
     <StackLayout>
       <TextField hint="Nombre" v-model="name" />
-
+      <StackLayout>
+        <label text="Seleccione Agencia"></label>
+      </StackLayout>
+      <StackLayout>
+        <label text="Agregue la sección"></label>
+      </StackLayout>
       <StackLayout orientation="horizontal">
-        <button @tap="openModal" text="Salvar" />
+        <button text="Salvar" />
         <button text="Close" />
       </StackLayout>
     </StackLayout>
@@ -20,11 +28,11 @@ export default {
   data() {
     return {
       name: "",
+      items: [],
+
     };
   },
-  methods: {
-
-  },
+  methods: {},
 };
 </script>
 

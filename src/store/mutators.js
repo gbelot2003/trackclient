@@ -25,6 +25,10 @@ export default {
         state.code = payload;
     },
 
+    UNSET_CODE(state) {
+        state.code = "";
+    },
+
     SET_PACKAGE(state, payload) {
         state.package = payload;
     },

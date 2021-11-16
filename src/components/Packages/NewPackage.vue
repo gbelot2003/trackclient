@@ -18,11 +18,12 @@
 
       <StackLayout>
         <Button text="Remitente" @tap="remitente" v-if="!getRemitente.name" />
-        <customers-item :item="getRemitente"  v-if="getRemitente.name"></customers-item>
+        <customers-item :item="getRemitente" title="Remitente"  v-if="getRemitente.name"></customers-item>
       </StackLayout>
 
       <StackLayout>
-        <Button text="Destinatario" @tap="destinatario" />
+        <Button text="Destinatario" @tap="destinatario" v-if="!getDestinatario.name" />
+        <customers-item :item="getDestinatario" title="Destinatario"  v-if="getDestinatario.name"></customers-item>
       </StackLayout>
 
       <StackLayout>
@@ -56,6 +57,9 @@ export default {
   computed: {
     getRemitente(){
       return this.$store.getters.getRemitente
+    },
+    getDestinatario(){
+      return this.$store.getters.getDestinatario
     }
   },
   methods: {
