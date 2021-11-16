@@ -7,17 +7,22 @@
       />
     </ActionBar>
     <StackLayout>
-      <TextField hint="Nombre" v-model="name" />
-      <StackLayout>
-        <label text="Seleccione Agencia"></label>
-      </StackLayout>
-      <StackLayout>
-        <label text="Agregue la sección"></label>
-      </StackLayout>
-      <StackLayout orientation="horizontal">
-        <button text="Salvar" />
-        <button text="Close" />
-      </StackLayout>
+      <GridLayout rows="auto, *, auto">
+        <StackLayout row="0">
+          <TextField hint="Nombre" v-model="name" />
+          <TextField hint="No Identidad" v-model="identity" />
+          <button text="Seleccione Agencia"></button>
+        </StackLayout>
+
+        <StackLayout row="1">
+          <button text="Agregue la sección"></button>
+        </StackLayout>
+
+        <StackLayout row="2">
+          <button text="Salvar" />
+          <button text="Close" />
+        </StackLayout>
+      </GridLayout>
     </StackLayout>
   </Page>
 </template>
@@ -28,8 +33,8 @@ export default {
   data() {
     return {
       name: "",
+      identity: '',
       items: [],
-
     };
   },
   methods: {},

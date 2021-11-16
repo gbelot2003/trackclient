@@ -4,7 +4,7 @@
       <NavigationButton android.systemIcon="ic_menu_back"  @tap="goBack" />
     </ActionBar>
     <StackLayout>
-      <ListPicker :items="listOfItems" v-model="selectedItem"  @selectedIndexChange="selectedIndexChanged"/>
+
     </StackLayout>
   </Page>
 </template>
@@ -17,7 +17,7 @@ export default {
   name: "SearchType",
   data(){
     return {
-      selectedItem: "",
+      ifForm : false,
       listOfItems: [],
     }
   },
@@ -30,10 +30,6 @@ export default {
         console.log(rest.data);
         this.listOfItems = rest.data
       });
-    },
-
-    selectedIndexChanged(event){
-      console.log($event.value)
     },
     goBack() {
       this.$navigateTo(NewPackage, {

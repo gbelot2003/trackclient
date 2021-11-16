@@ -1,6 +1,6 @@
 import Vue from 'nativescript-vue'
 import App from './components/App'
-import Home from './components/Packages/NewPackage'
+import Home from './components/Customers/CreateClient'
 
 import store from './store'
 
