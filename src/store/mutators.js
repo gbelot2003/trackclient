@@ -33,8 +33,16 @@ export default {
         state.remitente = payload;
     },
 
+    UNSET_REMITENTE(state) {
+        state.remitente = {};
+    },
+
     SET_DESTINATARIO(state, payload) {
         state.destinatario = payload;
+    },
+
+    UNSET_DESTINATARIO(state) {
+        state.destinatario = {}
     },
 
     SET_TIPO(state, payload) {
