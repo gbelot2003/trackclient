@@ -1,13 +1,24 @@
 <template>
   <Page>
+    <ActionBar title="Seleccione Agencia">
+      <NavigationButton
+        android.systemIcon="ic_menu_back"
+        @tap="$navigateBack"
+      />
+    </ActionBar>
     <StackLayout>
-      <Label class="h4" text="Nueva Agencia" />
-      <TextField hint="Nombre" v-model="name" />
-      
-      <StackLayout orientation="horizontal">
-        <button @tap="onClose" text="Salvar" />
-        <button @tap="onClose" text="Close" />
-      </StackLayout>
+      <GridLayout rows="auto, *, auto">
+        <StackLayout row="0">
+          <TextField
+            class="input-field input"
+            hint="Buscar Agencia"
+            
+          />
+        </StackLayout>
+         <StackLayout row="1">
+           
+         </StackLayout>
+      </GridLayout>
     </StackLayout>
   </Page>
 </template>

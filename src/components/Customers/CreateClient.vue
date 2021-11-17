@@ -11,7 +11,7 @@
         <StackLayout row="0">
           <TextField hint="Nombre" v-model="name" />
           <TextField hint="No Identidad" v-model="identity" />
-          <button text="Seleccione Agencia"></button>
+          <button text="Seleccione Agencia" @tap="selectSettlement"></button>
         </StackLayout>
 
         <StackLayout row="1">
@@ -28,16 +28,28 @@
 </template>
 
 <script>
+import CreateSettlement from '../Settlement/CreateSettlement.vue'
+
 export default {
   name: "CreateClient",
   data() {
     return {
       name: "",
-      identity: '',
+      identity: "",
       items: [],
     };
   },
-  methods: {},
+  methods: {
+    selectSettlement() {
+      this.$navigateTo(CreateSettlement, {
+        trasition: {
+          name: "slide",
+          duration: 200,
+          curve: "ease",
+        },
+      });
+    },
+  },
 };
 </script>
 
