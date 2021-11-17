@@ -93,7 +93,7 @@ export default {
         .post("http://192.168.5.108/api/clientes", data)
         .then((res) => {
           console.log(res.data);
-          (data = {}), this.$store.commit("SET_REMITENTE", res.data);
+          (data = {}), this.$store.commit("SET_DESTINATARIO", res.data);
 
           this.$navigateTo(NewPackage, {
             trasition: {

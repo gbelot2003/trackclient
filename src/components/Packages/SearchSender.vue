@@ -53,7 +53,7 @@ export default {
           name: "slide",
           duration: 200,
           curve: "ease",
-        },
+        }, 
       });
     },
     selected(item) {

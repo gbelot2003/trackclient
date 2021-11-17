@@ -11,6 +11,6 @@ Vue.registerElement('BarcodeScanner', () => require('nativescript-barcodescanner
 Vue.registerElement("DropDown", () => require("nativescript-drop-down/drop-down").DropDown);
 
 new Vue({
-  render: h => h('frame', [h(Home)]),
+  render: h => h('frame', [h(App)]),
   store,
 }).$start()

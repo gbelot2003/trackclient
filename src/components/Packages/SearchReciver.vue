@@ -20,7 +20,7 @@
           </ListView>
         </StackLayout>
         <StackLayout row="2">
-          <button class="btn primary" text="Nuevo Cliente" />
+           <button class="btn primary" text="Nuevo Cliente" @tap="createClient"/>
         </StackLayout>
       </GridLayout>
     </StackLayout>
@@ -30,6 +30,7 @@
 <script>
 import NewPackage from "./NewPackage.vue";
 import axios from "axios/dist/axios";
+import CreateClient from "../Customers/CreateClientDest.vue"
 
 export default {
   name: "SearchSender",
@@ -42,6 +43,15 @@ export default {
     this.getClientes();
   },
   methods: {
+    createClient() {
+      this.$navigateTo(CreateClient, {
+        trasition: {
+          name: "slide",
+          duration: 200,
+          curve: "ease",
+        },
+      });
+    },
     selected(item) {
       console.log(item);
       this.$store.commit("SET_DESTINATARIO", item);

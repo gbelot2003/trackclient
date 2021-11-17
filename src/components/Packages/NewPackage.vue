@@ -8,7 +8,7 @@
         <Button class="scan" text="Código" width="140" />
         <label
           class="code"
-          :text="code"
+          :text="getCode"
           width="200"
           verticalAlignment="center"
           horizontalAlignment="center"
@@ -18,12 +18,24 @@
 
       <StackLayout>
         <Button text="Remitente" @tap="remitente" v-if="!getRemitente.name" />
-        <customers-item :item="getRemitente" title="Remitente"  v-if="getRemitente.name"></customers-item>
+        <customers-item
+          :item="getRemitente"
+          title="Remitente"
+          v-if="getRemitente.name"
+        ></customers-item>
       </StackLayout>
 
       <StackLayout>
-        <Button text="Destinatario" @tap="destinatario" v-if="!getDestinatario.name" />
-        <customers-item :item="getDestinatario" title="Destinatario"  v-if="getDestinatario.name"></customers-item>
+        <Button
+          text="Destinatario"
+          @tap="destinatario"
+          v-if="!getDestinatario.name"
+        />
+        <customers-item
+          :item="getDestinatario"
+          title="Destinatario"
+          v-if="getDestinatario.name"
+        ></customers-item>
       </StackLayout>
 
       <StackLayout>
@@ -41,8 +53,8 @@
 import Home from "../Home.vue";
 import SearchReciber from "./SearchReciver.vue";
 import SearchSender from "./SearchSender.vue";
-import SearchType from "./SearchType.vue"
-import CustomersItem from './items/CustomersItem.vue'
+import SearchType from "./SearchType.vue";
+import CustomersItem from "./items/CustomersItem.vue";
 
 export default {
   name: "NewPackage",
@@ -52,19 +64,23 @@ export default {
     };
   },
   components: {
-    CustomersItem
+    CustomersItem,
   },
   computed: {
-    getRemitente(){
-      return this.$store.getters.getRemitente
+    getCode() {
+      return this.$store.getters.getCode;
     },
-    getDestinatario(){
-      return this.$store.getters.getDestinatario
-    }
+    getRemitente() {
+      return this.$store.getters.getRemitente;
+    },
+    getDestinatario() {
+      return this.$store.getters.getDestinatario;
+    },
   },
   methods: {
     autocode() {
-      this.code = Math.floor(Math.random() * 999999999) + 111111111;
+      let code = Math.floor(Math.random() * 999999999) + 111111111;
+      this.$store.commit("SET_CODE", code);
     },
 
     remitente() {
