@@ -11,13 +11,19 @@
         <StackLayout row="0">
           <TextField hint="Nombre" v-model="name" />
           <TextField hint="No Identidad" v-model="identity" />
-          <button text="Seleccione Agencia" @tap="selectSettlement"></button>
-          /** aqui settlementitem desde Vuex */
+          <button
+            text="Seleccione Agencia"
+            @tap="selectSettlement"
+            v-if="!getAgencia.name"
+          ></button>
+          <settlement-items
+            :item="getAgencia"
+            v-if="getAgencia.name"
+          ></settlement-items>
         </StackLayout>
 
         <StackLayout row="1">
           <button text="Agregue la sección"></button>
-          
         </StackLayout>
 
         <StackLayout row="2">
@@ -30,13 +36,13 @@
 </template>
 
 <script>
-import SelectSettement from '../Settlement/SelectSettement.vue'
-import SettlementItems from './items/SettlementItems.vue'
+import SelectSettement from "../Settlement/SelectSettement.vue";
+import SettlementItems from "./items/SettlementItems.vue";
 
 export default {
   name: "CreateClient",
   components: {
-    SettlementItems
+    SettlementItems,
   },
   data() {
     return {
@@ -54,6 +60,11 @@ export default {
           curve: "ease",
         },
       });
+    },
+  },
+  computed: {
+    getAgencia() {
+      return this.$store.getters.getAgencia;
     },
   },
 };

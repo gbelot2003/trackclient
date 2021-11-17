@@ -52,4 +52,16 @@ export default {
     SET_TIPO(state, payload) {
         state.tipo = payload;
     },
+
+    UNSET_TIPO(state) {
+        state.tipo = {}
+    },
+
+    SET_AGENCIA(state, payload) {
+        state.agencia = payload;
+    },
+
+    UNSET_AGENCIA(state) {
+        state.agencia = {}
+    },
 }

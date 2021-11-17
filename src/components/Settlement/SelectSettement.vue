@@ -18,7 +18,7 @@
         <StackLayout row="1">
           <ListView height="500" class="" for="item in agencias.data">
             <v-template>
-              <StackLayout>
+              <StackLayout@tap="selected(item)">
                 <label class="h6" :text="item.name" />
               </StackLayout>
             </v-template>
@@ -35,6 +35,7 @@
 
 <script>
 import axios from "axios/dist/axios";
+import CreateClient from "../Customers/CreateClient.vue";
 
 export default {
   name: "SelectSettement",
@@ -47,6 +48,17 @@ export default {
     this.getAgencias();
   },
   methods: {
+    selected(item) {
+      console.log(item);
+      this.$store.commit("SET_AGENCIA", item);
+      this.$navigateTo(CreateClient, {
+        trasition: {
+          name: "slide",
+          duration: 200,
+          curve: "ease",
+        },
+      });
+    },
     getAgencias() {
       axios.get("http://192.168.5.108/api/agencias").then((rest) => {
         console.log(rest.data);

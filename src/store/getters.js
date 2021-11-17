@@ -38,4 +38,8 @@ export default {
     getTipo(state) {
         return state.tipo
     },
+
+    getAgencia(state) {
+        return state.agencia
+    }
 }

@@ -8,5 +8,6 @@ export default {
     package: {},
     remitente:{},
     destinatario:{},
-    tipo: {}
+    tipo: {},
+    agencia: {},
 }
