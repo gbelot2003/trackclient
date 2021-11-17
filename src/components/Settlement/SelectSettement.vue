@@ -26,7 +26,7 @@
         </StackLayout>
 
         <StackLayout row="2">
-          <button class="btn primary" text="Nueva Agencia" />
+          <button class="btn primary" text="Nueva Agencia" @tap="showModal" />
         </StackLayout>
       </GridLayout>
     </StackLayout>
@@ -36,6 +36,7 @@
 <script>
 import axios from "axios/dist/axios";
 import CreateClient from "../Customers/CreateClient.vue";
+import CreateSettlement from './CreateSettlement.vue';
 
 export default {
   name: "SelectSettement",
@@ -44,10 +45,14 @@ export default {
       agencias: [],
     };
   },
+
   mounted() {
     this.getAgencias();
   },
   methods: {
+    showModal(){
+      this.$showModal(CreateSettlement, { fullscreen: true})
+    },
     selected(item) {
       console.log(item);
       this.$store.commit("SET_AGENCIA", item);
