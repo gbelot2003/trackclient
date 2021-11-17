@@ -44,6 +44,7 @@
 <script>
 import axios from "axios/dist/axios";
 import { ValueList } from "nativescript-drop-down";
+import CreateClient from "../Customers/CreateClient.vue";
 
 export default {
   name: "CreateSettlement",
@@ -52,8 +53,8 @@ export default {
       fields: {
         name: "",
         address: "",
-        departamento: "",
-        municipio: "",
+        department_id: "",
+        municipality_id: "",
       },
       departamentos: [],
       municipios: [],
@@ -69,7 +70,7 @@ export default {
     },
     SelectedDeptChange(args) {
       let number = args.newIndex + 1;
-      this.fields.departamento = number;
+      this.fields.department_id = number;
       axios.get("http://192.168.5.108/api/municipios/" + number).then((res) => {
         console.log(res.data);
         this.showMunic = true;
@@ -78,10 +79,25 @@ export default {
     },
     SelectedMunicChage(args) {
       let number = args.newIndex + 1;
-      this.fields.municipio = number;
+      this.fields.municipality_id = number;
     },
     saveData() {
-      console.log(this.fields);
+      axios
+        .post("http://192.168.5.108/api/agencias", this.fields)
+        .then((res) => {
+          console.log(res.data);
+          this.$store.commit("SET_AGENCIA", res.data);
+          this.$navigateTo(CreateClient, {
+            trasition: {
+              name: "slide",
+              duration: 200,
+              curve: "ease",
+            },
+          });
+          this.$modal.close();
+        });
+
+      //
     },
     closeModal() {
       this.$modal.close();
@@ -92,8 +108,8 @@ export default {
       if (
         this.fields.name === "" ||
         this.fields.address === "" ||
-        this.fields.departamento === "" ||
-        this.fields.municipio === ""
+        this.fields.department_id === "" ||
+        this.fields.municipality_id === ""
       ) {
         return false;
       }
