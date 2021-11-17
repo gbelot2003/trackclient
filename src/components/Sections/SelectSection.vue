@@ -25,7 +25,7 @@
           </ListView>
         </StackLayout>
         <StackLayout row="2">
-          <button class="btn primary" text="Nueva Sección" />
+          <button class="btn primary" text="Nueva Sección"  @tap="showModal"/>
         </StackLayout>
       </GridLayout>
     </StackLayout>
@@ -35,6 +35,7 @@
 <script>
 import axios from "axios/dist/axios";
 import CreateClient from "../Customers/CreateClient.vue";
+import CreateSeccion from "./CreateSection.vue";
 
 export default {
   name: "SelectSection",
@@ -47,6 +48,9 @@ export default {
     this.fecthSections();
   },
   methods: {
+    showModal() {
+      this.$showModal(CreateSeccion, { fullscreen: true });
+    },
     selected(item) {
       console.log(item);
       this.$store.commit("SET_SECCION", item);

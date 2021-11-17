@@ -1,6 +1,7 @@
 <template>
   <Page @loaded="loaded">
     <StackLayout class="p-t-20">
+      <Label class="header" text="Creacion de Agencia" />
       <GridLayout rows="auto, auto, *, auto">
         <StackLayout row="0">
           <TextField hint="Nombre" v-model="fields.name" class="form" />
