@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import CreateSettlement from '../Settlement/CreateSettlement.vue'
+import SelectSettement from '../Settlement/SelectSettement.vue'
 
 export default {
   name: "CreateClient",
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     selectSettlement() {
-      this.$navigateTo(CreateSettlement, {
+      this.$navigateTo(SelectSettement, {
         trasition: {
           name: "slide",
           duration: 200,

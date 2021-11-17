@@ -8,8 +8,7 @@ import store from './store'
 Vue.config.silent = (TNS_ENV === 'production')
 Vue.registerElement('DrawingPad', () => require('@nativescript-community/drawingpad').DrawingPad);
 Vue.registerElement('BarcodeScanner', () => require('nativescript-barcodescanner').BarcodeScannerView)
-Vue.registerElement("FilterSelect", () => require("nativescript-filter-select").FilterSelect);
-
+Vue.registerElement("DropDown", () => require("nativescript-drop-down/drop-down").DropDown);
 
 new Vue({
   render: h => h('frame', [h(Home)]),
