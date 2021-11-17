@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <ActionBar title="Seleccione Agencia">
+    <ActionBar title="Seleccione Sección Admin">
       <NavigationButton
         android.systemIcon="ic_menu_back"
         @tap="$navigateBack"
@@ -10,13 +10,13 @@
       <GridLayout rows="auto, *, auto">
         <StackLayout row="0">
           <TextField
-            class="input-field input"
-            hint="Buscar Agencia"
+            class="form"
+            hint="Buscar Sección"
             @textChange="onTextChange"
           />
         </StackLayout>
         <StackLayout row="1">
-          <ListView height="500" class="" for="item in agencias.data">
+          <ListView height="500" class="" for="item in secciones.data">
             <v-template>
               <StackLayout @tap="selected(item)">
                 <label class="h6" :text="item.name" />
@@ -24,9 +24,8 @@
             </v-template>
           </ListView>
         </StackLayout>
-
         <StackLayout row="2">
-          <button class="btn primary" text="Nueva Agencia" @tap="showModal" />
+          <button class="btn primary" text="Nueva Sección" />
         </StackLayout>
       </GridLayout>
     </StackLayout>
@@ -36,26 +35,21 @@
 <script>
 import axios from "axios/dist/axios";
 import CreateClient from "../Customers/CreateClient.vue";
-import CreateSettlement from './CreateSettlement.vue';
 
 export default {
-  name: "SelectSettement",
+  name: "SelectSection",
   data() {
     return {
-      agencias: [],
+      secciones: [],
     };
   },
-
   mounted() {
-    this.getAgencias();
+    this.fecthSections();
   },
   methods: {
-    showModal(){
-      this.$showModal(CreateSettlement, { fullscreen: true})
-    },
     selected(item) {
       console.log(item);
-      this.$store.commit("SET_AGENCIA", item);
+      this.$store.commit("SET_SECCION", item);
       this.$navigateTo(CreateClient, {
         trasition: {
           name: "slide",
@@ -64,23 +58,20 @@ export default {
         },
       });
     },
-    getAgencias() {
-      axios.get("http://192.168.5.108/api/agencias").then((rest) => {
+    fecthSections() {
+      axios.get("http://192.168.5.108/api/secciones").then((rest) => {
         console.log(rest.data);
-        this.agencias = rest.data;
+        this.secciones = rest.data;
       });
     },
     onTextChange(arg) {
       axios
-        .get("http://192.168.5.108/api/agencias?string=" + arg.value)
+        .get("http://192.168.5.108/api/secciones?string=" + arg.value)
         .then((rest) => {
           console.log(rest.data);
-          this.agencias = rest.data;
+          this.secciones = rest.data;
         });
     },
   },
 };
 </script>
-
-<style scoped>
-</style>

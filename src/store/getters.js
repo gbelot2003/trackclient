@@ -41,5 +41,9 @@ export default {
 
     getAgencia(state) {
         return state.agencia
+    },
+
+    getSeccion(state) {
+        return state.seccion
     }
 }

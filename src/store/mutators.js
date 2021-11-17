@@ -64,4 +64,12 @@ export default {
     UNSET_AGENCIA(state) {
         state.agencia = {}
     },
+
+    SET_SECCION(state, payload) {
+        state.seccion = payload
+    },
+
+    UNSET_SECCION(state) {
+        state.seccion = {}
+    }
 }

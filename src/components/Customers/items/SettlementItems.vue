@@ -59,7 +59,7 @@ export default {
 
 .cancel {
   margin-top: 10;
-  padding-left: 20;
+  padding-left: 10;
   padding-right: 10;
 }
 </style>

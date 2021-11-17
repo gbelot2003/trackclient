@@ -10,4 +10,5 @@ export default {
     destinatario:{},
     tipo: {},
     agencia: {},
+    seccion: {}
 }
