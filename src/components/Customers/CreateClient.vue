@@ -9,8 +9,8 @@
     <StackLayout>
       <GridLayout rows="auto, *, auto">
         <StackLayout row="0">
-          <TextField hint="Nombre" v-model="name" />
-          <TextField hint="No Identidad" v-model="identity" />
+          <TextField hint="Nombre" v-model="name" class="form" />
+          <TextField hint="No Identidad" v-model="identity" class="form"/>
           <button
             text="Seleccione Agencia"
             @tap="selectSettlement"

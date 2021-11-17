@@ -120,16 +120,5 @@ export default {
 </script>
 
 <style scoped>
-.form {
-  margin-bottom: 20;
-  font-size: 16;
-  placeholder-color: rgb(223, 203, 203);
-  padding-left: 5;
-}
 
-.selected {
-  background-color: rgb(194, 166, 166);
-  padding-top: 10;
-  padding-bottom: 10;
-}
 </style>

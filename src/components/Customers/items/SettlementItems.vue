@@ -1,14 +1,17 @@
 <template>
-  <GridLayout columns="*, auto" height="100">
+  <GridLayout columns="*, auto" height="155">
     <StackLayout class="item" col="0">
-      <label class="h5 title" text="Agencia Seleccionada"></label>
+      <label class="h6 title" text="Agencia Seleccionada"></label>
       <label class="h6 label" :text="item.name"></label>
+      <department :department="item.department"></department>
+      <municipality :municipality="item.municipality"></municipality>
+      <Label :text="item.address" />
     </StackLayout>
     <StackLayout col="1">
       <button
         text="Cancelar"
         class="cancel"
-        height="90"
+        height="145"
         @tap="remove"
       ></button>
     </StackLayout>
@@ -16,9 +19,14 @@
 </template>
 
 <script>
+import Department from './Department.vue'
+import Municipality from './Municipality.vue'
 export default {
   name: "SettlementItems",
   props: ["item", "title"],
+  components: {
+    Department, Municipality
+  },
   methods: {
     remove() {
       this.$store.commit("UNSET_AGENCIA");
