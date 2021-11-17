@@ -12,10 +12,12 @@
           <TextField hint="Nombre" v-model="name" />
           <TextField hint="No Identidad" v-model="identity" />
           <button text="Seleccione Agencia" @tap="selectSettlement"></button>
+          /** aqui settlementitem desde Vuex */
         </StackLayout>
 
         <StackLayout row="1">
           <button text="Agregue la sección"></button>
+          
         </StackLayout>
 
         <StackLayout row="2">
@@ -29,9 +31,13 @@
 
 <script>
 import SelectSettement from '../Settlement/SelectSettement.vue'
+import SettlementItems from './items/SettlementItems.vue'
 
 export default {
   name: "CreateClient",
+  components: {
+    SettlementItems
+  },
   data() {
     return {
       name: "",

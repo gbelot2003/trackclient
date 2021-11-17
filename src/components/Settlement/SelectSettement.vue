@@ -9,7 +9,11 @@
     <StackLayout>
       <GridLayout rows="auto, *, auto">
         <StackLayout row="0">
-          <TextField class="input-field input" hint="Buscar Agencia" @textChange="onTextChange" />
+          <TextField
+            class="input-field input"
+            hint="Buscar Agencia"
+            @textChange="onTextChange"
+          />
         </StackLayout>
         <StackLayout row="1">
           <ListView height="500" class="" for="item in agencias.data">
