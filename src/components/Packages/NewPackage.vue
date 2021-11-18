@@ -5,13 +5,24 @@
     </ActionBar>
     <StackLayout>
       <StackLayout orientation="horizontal">
-        <Button class="scan" text="Código" width="140" />
+        <BarcodeScanner
+          row="0"
+          height="300"
+          formats="QR_CODE, EAN_13, UPC_A"
+          beepOnScan="true"
+          reportDuplicates="true"
+          preferFrontCamera="false"
+          @scanResult="onScanResult"
+          v-if="isIOS"
+        />
+        <Button class="scan" text="Código" width="140" @tap="doScanWithBackCameraWithFlip" />
         <label
           class="code"
           :text="getCode"
           width="200"
           verticalAlignment="center"
           horizontalAlignment="center"
+          
         />
         <Button class="auto" text="auto" width="40" @tap="autocode" />
       </StackLayout>
@@ -55,12 +66,13 @@ import SearchReciber from "./SearchReciver.vue";
 import SearchSender from "./SearchSender.vue";
 import SearchType from "./SearchType.vue";
 import CustomersItem from "./items/CustomersItem.vue";
+import { BarcodeScanner } from "nativescript-barcodescanner";
 
 export default {
   name: "NewPackage",
   data() {
     return {
-      code: "",
+      isIOS: "",
     };
   },
   components: {
@@ -78,6 +90,43 @@ export default {
     },
   },
   methods: {
+          onScanResult(evt) {
+        console.log(`onScanResult: ${evt.text} (${evt.format})`);
+      },
+      doScanWithBackCameraWithFlip() {
+        this.scan(false, true);
+        //this.sendCode();
+      },
+      scan(preferFrontCamera, showFlipCameraButton) {
+        new BarcodeScanner()
+          .scan({
+            cancelLabel: "EXIT. Also, try the volume buttons!", // iOS only, default 'Close'
+            cancelLabelBackgroundColor: "#333333", // iOS only, default '#000000' (black)
+            message: "Use the volume buttons for extra light", // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
+            preferFrontCamera, // Android only, default false
+            showFlipCameraButton, // default false
+            showTorchButton: true, // iOS only, default false
+            torchOn: false, // launch with the flashlight on (default false)
+            resultDisplayDuration: 500, // Android only, default 1500 (ms), set to 0 to disable echoing the scanned text
+            beepOnScan: true, // Play or Suppress beep on scan (default true)
+            openSettingsIfPermissionWasPreviouslyDenied: true, // On iOS you can send the user to the settings app if access was previously denied
+            closeCallback: () => {
+              console.log("Scanner closed @ " + new Date().getTime());
+            },
+          })
+          .then((result) => {
+              let that = this; 
+              // Cambiar accion por la necesaria
+              console.log(result.text);
+              that.$store.dispatch('SET_CODE', result.text);
+          }).catch(err => {
+            alert("No Code in database");
+            console.log("No scan. " + err);
+          });
+      },
+      sendCode(){
+        this.$store.dispatch('SEARCH_CODE', 439224452);
+      },
     autocode() {
       let code = Math.floor(Math.random() * 999999999) + 111111111;
       this.$store.commit("SET_CODE", code);

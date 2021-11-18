@@ -44,8 +44,8 @@
         console.log(`onScanResult: ${evt.text} (${evt.format})`);
       },
       doScanWithBackCameraWithFlip() {
-        //this.scan(false, true);
-        this.sendCode();
+        this.scan(false, true);
+        //this.sendCode();
       },
       scan(preferFrontCamera, showFlipCameraButton) {
         new BarcodeScanner()
