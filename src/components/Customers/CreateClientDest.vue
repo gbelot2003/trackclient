@@ -3,7 +3,7 @@
     <ActionBar title="Crear Nuevo Cliente">
       <NavigationButton
         android.systemIcon="ic_menu_back"
-        @tap="$navigateBack"
+        @tap="goBack"
       />
     </ActionBar>
     <StackLayout>
@@ -106,6 +106,15 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    goBack() {
+      this.$navigateTo(NewPackage, {
+        trasition: {
+          name: "slide",
+          duration: 200,
+          curve: "ease",
+        },
+      });
     },
   },
   computed: {
