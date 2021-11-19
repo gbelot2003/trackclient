@@ -77,6 +77,7 @@ import Home from "../Home.vue";
 import TypeItem from "./items/TypeItem.vue";
 import SearchReciber from "../Customers/SearchReciver.vue";
 import SearchSender from "../Customers/SearchSender.vue";
+import SearchType from '../Types/SearchType.vue';
 import CustomersItem from "./items/CustomersItem.vue";
 import { BarcodeScanner } from "nativescript-barcodescanner";
 
@@ -169,7 +170,15 @@ export default {
       });
     },
 
-
+    tipo() {
+      this.$navigateTo(SearchType, {
+        trasition: {
+          name: "slide",
+          duration: 200,
+          curve: "ease",
+        },
+      });
+    },
 
     barBack() {
       this.$navigateTo(Home, {

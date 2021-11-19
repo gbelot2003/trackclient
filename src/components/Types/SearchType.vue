@@ -22,7 +22,7 @@
           </ListView>
         </StackLayout>
         <StackLayout row="2">
-          <button class="btn primary" text="Nuevo Tipo" />
+          <button class="btn primary" text="Nuevo Tipo" @tap="showModal" />
         </StackLayout>
       </GridLayout>
     </StackLayout>
@@ -31,6 +31,7 @@
 
 <script>
 import NewPackage from "../Packages/NewPackage.vue";
+import CreateType from './CreateType.vue'
 import axios from "axios/dist/axios";
 
 export default {
@@ -45,6 +46,9 @@ export default {
     this.getTipos();
   },
   methods: {
+    showModal() {
+      this.$showModal(CreateType, { fullscreen: true });
+    },
     selected(item) {
       console.log(item);
       this.$store.commit("SET_TIPO", item);
