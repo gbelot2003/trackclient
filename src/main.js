@@ -1,6 +1,6 @@
 import Vue from 'nativescript-vue'
 import App from './components/App'
-import Home from './components/Customers/CreateClient'
+import Home from './components/Packages/SearchType'
 //import Home from './components/Home'
 import store from './store'
 
@@ -11,6 +11,6 @@ Vue.registerElement('BarcodeScanner', () => require('nativescript-barcodescanner
 Vue.registerElement("DropDown", () => require("nativescript-drop-down/drop-down").DropDown);
 
 new Vue({
-  render: h => h('frame', [h(App)]),
+  render: h => h('frame', [h(Home)]),
   store,
 }).$start()

@@ -1,35 +1,74 @@
 <template>
   <Page>
     <ActionBar title="Tipo de paquete">
-      <NavigationButton android.systemIcon="ic_menu_back"  @tap="goBack" />
+      <NavigationButton android.systemIcon="ic_menu_back" @tap="goBack" />
     </ActionBar>
     <StackLayout>
-
+      <GridLayout rows="auto, *, auto">
+        <StackLayout row="0">
+          <TextField
+            class="form"
+            hint="Buscar Sección"
+            @textChange="onTextChange"
+          />
+        </StackLayout>
+        <StackLayout row="1">
+          <ListView height="500" class="" for="item in tipos.data">
+            <v-template>
+              <StackLayout @tap="selected(item)">
+                <label class="h6" :text="item.name" />
+              </StackLayout>
+            </v-template>
+          </ListView>
+        </StackLayout>
+        <StackLayout row="2">
+          <button class="btn primary" text="Nuevo Tipo" />
+        </StackLayout>
+      </GridLayout>
     </StackLayout>
   </Page>
 </template>
 
 <script>
-import NewPackage from "./NewPackage.vue"
+import NewPackage from "./NewPackage.vue";
 import axios from "axios/dist/axios";
 
 export default {
   name: "SearchType",
-  data(){
+  data() {
     return {
-      ifForm : false,
-      listOfItems: [],
-    }
+      ifForm: false,
+      tipos: [],
+    };
   },
-  mounted(){
+  mounted() {
     this.getTipos();
   },
   methods: {
-    getTipos(){
-        axios.get("http://192.168.5.108/api/tipos").then((rest) => {
-        console.log(rest.data);
-        this.listOfItems = rest.data
+    selected(item) {
+      console.log(item);
+      this.$store.commit("SET_TIPO", item);
+      this.$navigateTo(NewPackage, {
+        trasition: {
+          name: "slide",
+          duration: 200,
+          curve: "ease",
+        },
       });
+    },
+    getTipos() {
+      axios.get("http://192.168.5.108/api/tipos").then((rest) => {
+        console.log(rest.data);
+        this.tipos = rest.data;
+      });
+    },
+    onTextChange(arg) {
+      axios
+        .get("http://192.168.5.108/api/tipos?string=" + arg.value)
+        .then((rest) => {
+          console.log(rest.data);
+          this.tipos = rest.data;
+        });
     },
     goBack() {
       this.$navigateTo(NewPackage, {
