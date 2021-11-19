@@ -30,44 +30,51 @@
         />
         <Button class="auto" text="auto" width="40" @tap="autocode" />
       </StackLayout>
+      <ScrollView>
+        <GridLayout rows="auto, auto, auto, auto">
+          <StackLayout row="0">
+            <Button
+              text="Remitente"
+              @tap="remitente"
+              v-if="!getRemitente.name"
+            />
+            <customers-item
+              :item="getRemitente"
+              title="Remitente"
+              v-if="getRemitente.name"
+            ></customers-item>
+          </StackLayout>
 
-      <StackLayout>
-        <Button text="Remitente" @tap="remitente" v-if="!getRemitente.name" />
-        <customers-item
-          :item="getRemitente"
-          title="Remitente"
-          v-if="getRemitente.name"
-        ></customers-item>
-      </StackLayout>
+          <StackLayout row="1">
+            <Button
+              text="Destinatario"
+              @tap="destinatario"
+              v-if="!getDestinatario.name"
+            />
+            <customers-item
+              :item="getDestinatario"
+              title="Destinatario"
+              v-if="getDestinatario.name"
+            ></customers-item>
+          </StackLayout>
 
-      <StackLayout>
-        <Button
-          text="Destinatario"
-          @tap="destinatario"
-          v-if="!getDestinatario.name"
-        />
-        <customers-item
-          :item="getDestinatario"
-          title="Destinatario"
-          v-if="getDestinatario.name"
-        ></customers-item>
-      </StackLayout>
+          <StackLayout row="2">
+            <Button text="Tipo de Paquete" @tap="tipo" v-if="!getTipo.name" />
+            <type-item :item="getTipo" v-if="getTipo.name"></type-item>
+          </StackLayout>
 
-      <StackLayout>
-        <Button text="Tipo de Paquete" @tap="tipo" v-if="!getTipo.name" />
-        <type-item :item="getTipo" v-if="getTipo.name"></type-item>
-      </StackLayout>
-
-      <StackLayout>
-        <Button text="Descripción o Detalle" />
-      </StackLayout>
+          <StackLayout row="3">
+            <Button text="Descripción o Detalle" />
+          </StackLayout>
+        </GridLayout>
+      </ScrollView>
     </StackLayout>
   </Page>
 </template>
 
 <script>
 import Home from "../Home.vue";
-import TypeItem from './items/TypeItem.vue'
+import TypeItem from "./items/TypeItem.vue";
 import SearchReciber from "./SearchReciver.vue";
 import SearchSender from "./SearchSender.vue";
 import SearchType from "./SearchType.vue";
@@ -82,7 +89,8 @@ export default {
     };
   },
   components: {
-    CustomersItem, TypeItem
+    CustomersItem,
+    TypeItem,
   },
   computed: {
     getCode() {
