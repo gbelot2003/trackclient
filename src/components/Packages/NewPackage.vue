@@ -78,7 +78,7 @@
 
           <!-- <StackLayout row="4">
             <Button text="Tomar Fotografia" @tap="takePicture" />
-            <Image :src="getImage" width="75" height="75" />
+            <Image :src="getImage" widuth="75" height="75" />
           </StackLayout> -->
 
           <StackLayout row="5">
@@ -86,6 +86,7 @@
               text="Crear Envio"
               class="btn-primary"
               @tap="SubmitPackage"
+              v-if="getCode"
             />
           </StackLayout>
         </GridLayout>
@@ -105,8 +106,8 @@ import { BarcodeScanner } from "nativescript-barcodescanner";
 import axios from "axios/dist/axios";
 import Exit from "./modals/Exit.vue";
 const camera = require("@nativescript/camera");
-import * as geolocation from "@nativescript/geolocation";
-const { Accuracy } = require("tns-core-modules/ui/enums");
+var geolocation = require("nativescript-geolocation");
+import { Accuracy } from "tns-core-modules/ui/enums"; 
 
 export default {
   name: "NewPackage",
@@ -126,7 +127,7 @@ export default {
   },
   mounted() {
     geolocation.enableLocationRequest().then(() => {
-      this.getLocation();
+      this.getGeolocation();
     });
   },
   computed: {
@@ -150,6 +151,21 @@ export default {
     },
   },
   methods: {
+    getGeolocation() {
+      setInterval(() => {
+        geolocation
+          .getCurrentLocation({
+            desiredAccuracy: Accuracy.high,
+            maximumAge: 5000,
+            timeout: 20000,
+          })
+          .then((res) => {
+            let that = this;
+            this.latitude = res.latitude;
+            this.longitude = res.longitude;
+          });
+      }, 2000);
+    },
     exitModal() {
       this.$showModal(Exit).then((res) => {
         if (res === "continuar") {
@@ -167,30 +183,8 @@ export default {
       this.$store.commit("UNSET_TIPO");
       this.detalles = "";
     },
-    getLocation() {
-      geolocation
-        .getCurrentLocation({
-          desiredAccuracy: Accuracy.high,
-          maximumAge: 5000,
-          timeout: 20000,
-        })
-        .then((res) => {
-          console.log(res);
-        });
-    },
-    SubmitPackage() {
-      geolocation.enableLocationRequest().then(() => {
-        geolocation
-          .getCurrentLocation({
-            desiredAccuracy: Accuracy.high,
-            maximumAge: 5000,
-            timeout: 20000,
-          })
-          .then((res) => {
-            console.log(res);
-          });
-      });
 
+    SubmitPackage() {
       let data = {
         code: this.getCode,
         user_id: 1,
@@ -205,8 +199,6 @@ export default {
       };
 
       console.log(data);
-      /** 
-      /**
       axios
         .post("http://192.168.5.108/api/packages", data, {
           headers: {
@@ -224,8 +216,6 @@ export default {
             "No has llenado todos los campos o hay un error en la operación"
           );
         });
-          */
-      //
     },
 
     onScanResult(evt) {

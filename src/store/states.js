@@ -5,8 +5,8 @@ export default {
     isLoggedIn: '',
     user: {},
     coordenates: {
-        latitud: '',
-        longitud: ''
+        latitude: '',
+        longitude: ''
     },
     code: 0,
     package: {},

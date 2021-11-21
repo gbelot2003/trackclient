@@ -15,14 +15,22 @@
 
 <script>
 import NewPackage from "./Packages/NewPackage.vue";
-
+var geolocation = require("nativescript-geolocation");
+import { Accuracy } from "tns-core-modules/ui/enums"; // used to describe at what accuracy the location should be get
 
 export default {
   data() {
-    return {};
+    return {
+      current_loc: "",
+    };
+  },
+  mounted() {
+    geolocation.enableLocationRequest().then(() => {
+      this.getGeolocation();
+    });
   },
   methods: {
-    newPackage() {
+      newPackage() {
       this.$navigateTo(NewPackage, {
         trasition: {
           name: "slide",

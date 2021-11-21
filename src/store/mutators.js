@@ -31,13 +31,13 @@ export default {
 
     SET_COODENATES(state, payload) {
         state.coordenates.latitude = payload.latitude
-        state.coordenates.longitude = payload.longitude
+        state.coordenates.longitude = payload.latitude
     },
 
     UNSET_COORDENATES(state) {
         state.coordenates = {
-            latitud: '',
-            longitud: ''
+            latitude: '',
+            latitude: ''
         }
     },
 
