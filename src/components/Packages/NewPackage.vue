@@ -30,8 +30,8 @@
         />
         <Button class="auto" text="auto" width="40" @tap="autocode" />
       </StackLayout>
-      <ScrollView>
-        <GridLayout rows="auto, auto, auto, auto">
+      <ScrollView height="600">
+        <GridLayout rows="auto, auto, auto, auto, auto, *">
           <StackLayout row="0">
             <Button
               text="Remitente"
@@ -64,7 +64,29 @@
           </StackLayout>
 
           <StackLayout row="3">
-            <Button text="Descripción o Detalle" />
+            <Button
+              text="Descripción o Detalle"
+              @tap="showDescription = showDescription ? false : true"
+            />
+            <label
+              text="Descripción o Detalles"
+              class="descripcion"
+              v-if="showDescription"
+            />
+            <TextView v-model="detalles" v-if="showDescription" />
+          </StackLayout>
+
+          <!-- <StackLayout row="4">
+            <Button text="Tomar Fotografia" @tap="takePicture" />
+            <Image :src="getImage" width="75" height="75" />
+          </StackLayout> -->
+
+          <StackLayout row="5">
+            <Button
+              text="Crear Envio"
+              class="btn-primary"
+              @tap="SubmitPackage"
+            />
           </StackLayout>
         </GridLayout>
       </ScrollView>
@@ -77,15 +99,20 @@ import Home from "../Home.vue";
 import TypeItem from "./items/TypeItem.vue";
 import SearchReciber from "../Customers/SearchReciver.vue";
 import SearchSender from "../Customers/SearchSender.vue";
-import SearchType from '../Types/SearchType.vue';
+import SearchType from "../Types/SearchType.vue";
 import CustomersItem from "./items/CustomersItem.vue";
 import { BarcodeScanner } from "nativescript-barcodescanner";
+import axios from "axios/dist/axios";
+const camera = require("@nativescript/camera");
 
 export default {
   name: "NewPackage",
   data() {
     return {
       isIOS: "",
+      showDescription: false,
+      detalles: "",
+      image: "",
     };
   },
   components: {
@@ -105,14 +132,44 @@ export default {
     getTipo() {
       return this.$store.getters.getTipo;
     },
+    getImage() {
+      return this.$store.getters.getImage;
+    },
   },
   methods: {
+    SubmitPackage() {
+      let data = {
+        code: this.getCode,
+        user_id: 1,
+        state_id: 1,
+        type_id: this.getTipo.id,
+        send_id: this.getRemitente.id,
+        recive_id: this.getDestinatario.id,
+        description: this.detalles,
+        image: this.getImage,
+      };
+
+      axios
+        .post("http://192.168.5.108/api/packages", data, {
+          headers: {
+            Accept: "application/json",
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+
+      //console.log(data)
+    },
+
     onScanResult(evt) {
       console.log(`onScanResult: ${evt.text} (${evt.format})`);
     },
     doScanWithBackCameraWithFlip() {
       this.scan(false, true);
-      //this.sendCode();
     },
     scan(preferFrontCamera, showFlipCameraButton) {
       new BarcodeScanner()
@@ -135,7 +192,7 @@ export default {
           let that = this;
           // Cambiar accion por la necesaria
           console.log(result.text);
-          that.$store.dispatch("SET_CODE", result.text);
+          that.$store.commit("SET_CODE", result.text);
         })
         .catch((err) => {
           alert("No Code in database");
@@ -149,7 +206,29 @@ export default {
       let code = Math.floor(Math.random() * 999999999) + 111111111;
       this.$store.commit("SET_CODE", code);
     },
-
+    takePicture() {
+      camera
+        .requestPermissions()
+        .then(() => {
+          camera
+            .takePicture({
+              width: 600,
+              height: 600,
+              keepAspectRatio: true,
+              saveToGallery: true,
+            })
+            .then((imageAsset) => {
+              this.image = imageAsset;
+              this.$store.commit("SET_IMAGE", imageAsset);
+            })
+            .catch((e) => {
+              console.log("error:", e);
+            });
+        })
+        .catch((e) => {
+          console.log("Error requesting permission");
+        });
+    },
     remitente() {
       this.$navigateTo(SearchSender, {
         trasition: {
@@ -217,5 +296,9 @@ export default {
   background-color: darkcyan;
   color: white;
   height: 48;
+}
+
+.descripcion {
+  text-align: center;
 }
 </style>

@@ -71,5 +71,9 @@ export default {
 
     UNSET_SECCION(state) {
         state.seccion = {}
+    },
+
+    SET_IMAGE(state, payload) {
+        state.image = payload
     }
 }

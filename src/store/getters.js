@@ -45,5 +45,9 @@ export default {
 
     getSeccion(state) {
         return state.seccion
-    }
+    },
+
+    getImage(state) {
+        return state.image
+    },
 }

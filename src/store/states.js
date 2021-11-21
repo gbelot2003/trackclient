@@ -9,6 +9,7 @@ export default {
     remitente:{},
     destinatario:{},
     tipo: {},
+    image: '',
     agencia: {},
     seccion: {}
 }
