@@ -924,6 +924,13 @@
     "reduce-css-calc" "^2.1.7"
     "tslib" "~2.0.0"
 
+"@nativescript/geolocation@^8.0.0":
+  "integrity" "sha512-hJS/fu3GwFYh2Jg/3MZYtMNFChvma9gvWv49pdnTforgRvQwQ2saawoSrSt2sBXhPmKcagKZXQDU9/FJm0xzVQ=="
+  "resolved" "https://registry.npmjs.org/@nativescript/geolocation/-/geolocation-8.0.0.tgz"
+  "version" "8.0.0"
+  dependencies:
+    "nativescript-permissions" "~1.3.0"
+
 "@nativescript/hook@~2.0.0":
   "integrity" "sha512-v3Hj3Zpd69sQJfFpDNXonV0EjO1a2OL4l48wlo1Ycsqk4r7RY822d/irFTjt0LllRG0OcdEGgfG6wKb0YgPyHw=="
   "resolved" "https://registry.npmjs.org/@nativescript/hook/-/hook-2.0.0.tgz"

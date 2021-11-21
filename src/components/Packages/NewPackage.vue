@@ -105,6 +105,8 @@ import { BarcodeScanner } from "nativescript-barcodescanner";
 import axios from "axios/dist/axios";
 import Exit from "./modals/Exit.vue";
 const camera = require("@nativescript/camera");
+import * as geolocation from "@nativescript/geolocation";
+const { Accuracy } = require("tns-core-modules/ui/enums");
 
 export default {
   name: "NewPackage",
@@ -114,11 +116,18 @@ export default {
       showDescription: false,
       detalles: "",
       image: "",
+      latitude: "",
+      longitude: "",
     };
   },
   components: {
     CustomersItem,
     TypeItem,
+  },
+  mounted() {
+    geolocation.enableLocationRequest().then(() => {
+      this.getLocation();
+    });
   },
   computed: {
     getCode() {
@@ -135,6 +144,9 @@ export default {
     },
     getImage() {
       return this.$store.getters.getImage;
+    },
+    getCoordenates() {
+      return this.$store.getters.getCoordenates;
     },
   },
   methods: {
@@ -155,11 +167,36 @@ export default {
       this.$store.commit("UNSET_TIPO");
       this.detalles = "";
     },
+    getLocation() {
+      geolocation
+        .getCurrentLocation({
+          desiredAccuracy: Accuracy.high,
+          maximumAge: 5000,
+          timeout: 20000,
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    },
     SubmitPackage() {
+      geolocation.enableLocationRequest().then(() => {
+        geolocation
+          .getCurrentLocation({
+            desiredAccuracy: Accuracy.high,
+            maximumAge: 5000,
+            timeout: 20000,
+          })
+          .then((res) => {
+            console.log(res);
+          });
+      });
+
       let data = {
         code: this.getCode,
         user_id: 1,
         state_id: 2,
+        latitude: this.latitude,
+        longitude: this.longitude,
         type_id: this.getTipo.id,
         send_id: this.getRemitente.id,
         recive_id: this.getDestinatario.id,
@@ -167,6 +204,9 @@ export default {
         image: this.getImage,
       };
 
+      console.log(data);
+      /** 
+      /**
       axios
         .post("http://192.168.5.108/api/packages", data, {
           headers: {
@@ -180,10 +220,12 @@ export default {
         .catch((err) => {
           console.log(err);
           //this.exitModal();
-          alert("No has llenado todos los campos o hay un error en la operación");
+          alert(
+            "No has llenado todos los campos o hay un error en la operación"
+          );
         });
-
-      //console.log(data)
+          */
+      //
     },
 
     onScanResult(evt) {

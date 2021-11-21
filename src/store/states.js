@@ -4,6 +4,10 @@ export default {
     expires_at: '',
     isLoggedIn: '',
     user: {},
+    coordenates: {
+        latitud: '',
+        longitud: ''
+    },
     code: 0,
     package: {},
     remitente:{},
@@ -11,5 +15,6 @@ export default {
     tipo: {},
     image: '',
     agencia: {},
-    seccion: {}
+    seccion: {},
+
 }

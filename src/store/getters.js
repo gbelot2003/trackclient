@@ -19,6 +19,10 @@ export default {
         return state.user;
     },
 
+    getCoordenates(state) {
+        return state.coordenates;
+    },
+
     getCode(state) {
         return state.code;
     },
@@ -50,4 +54,5 @@ export default {
     getImage(state) {
         return state.image
     },
+
 }

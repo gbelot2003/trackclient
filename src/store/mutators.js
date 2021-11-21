@@ -29,6 +29,18 @@ export default {
         state.code = "";
     },
 
+    SET_COODENATES(state, payload) {
+        state.coordenates.latitude = payload.latitude
+        state.coordenates.longitude = payload.longitude
+    },
+
+    UNSET_COORDENATES(state) {
+        state.coordenates = {
+            latitud: '',
+            longitud: ''
+        }
+    },
+
     SET_PACKAGE(state, payload) {
         state.package = payload;
     },
