@@ -103,6 +103,7 @@ import SearchType from "../Types/SearchType.vue";
 import CustomersItem from "./items/CustomersItem.vue";
 import { BarcodeScanner } from "nativescript-barcodescanner";
 import axios from "axios/dist/axios";
+import Exit from "./modals/Exit.vue";
 const camera = require("@nativescript/camera");
 
 export default {
@@ -137,11 +138,28 @@ export default {
     },
   },
   methods: {
+    exitModal() {
+      this.$showModal(Exit).then((res) => {
+        if (res === "continuar") {
+          this.clear();
+        } else {
+          this.clear();
+          this.barBack();
+        }
+      });
+    },
+    clear() {
+      this.$store.commit("UNSET_CODE");
+      this.$store.commit("UNSET_REMITENTE");
+      this.$store.commit("UNSET_DESTINATARIO");
+      this.$store.commit("UNSET_TIPO");
+      this.detalles = "";
+    },
     SubmitPackage() {
       let data = {
         code: this.getCode,
         user_id: 1,
-        state_id: 1,
+        state_id: 2,
         type_id: this.getTipo.id,
         send_id: this.getRemitente.id,
         recive_id: this.getDestinatario.id,
@@ -157,9 +175,12 @@ export default {
         })
         .then((res) => {
           console.log(res.data);
+          this.exitModal();
         })
         .catch((err) => {
-          console.log(err.message);
+          console.log(err);
+          //this.exitModal();
+          alert("No has llenado todos los campos o hay un error en la operación");
         });
 
       //console.log(data)
