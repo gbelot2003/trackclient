@@ -28,7 +28,7 @@
           verticalAlignment="center"
           horizontalAlignment="center"
         />
-        <Button class="auto" text="auto" width="40" @tap="manualCode" />
+        <Button class="auto" text="manu" width="50" @tap="manualCode" />
       </StackLayout>
 
       <GridLayout rows="auto, auto" columns="*,*">
@@ -52,7 +52,11 @@
         <Button text="Transitos Finales" @tap="bfinales" v-if="finales" />
       </StackLayout>
       <StackLayout>
-        <Label :text="getTransito" v-if="getTransito" />
+        <transito-item :item="getTransito" v-if="getTransito" v-on:choice="showChoices"/>
+      </StackLayout>
+      <StackLayout>
+        <TextView v-if="getTransito" class="form" hint="Detalles" v-model="details" />
+        <Button v-if="getTransito" text="Registras" class="btn-primary" />
       </StackLayout>
     </StackLayout>
   </Page>
@@ -69,17 +73,20 @@ const dialogs = require("tns-core-modules/ui/dialogs");
 import { ValueList } from "nativescript-drop-down";
 import RegularVue from "./transits/Regular.vue";
 import FinalesVue from "./transits/Finales.vue";
+import TransitoItem from "./transits/TransitoItem.vue";
 
 export default {
   name: "Transaction",
   components: {
     CustomersItem,
+    TransitoItem,
   },
   data() {
     return {
       isIOS: "",
       regulares: false,
       finales: false,
+      details: '',
     };
   },
   methods: {
@@ -97,13 +104,21 @@ export default {
       });
     },
     bregulares() {
-      this.$showModal(RegularVue, { fullscreen: true });
+      this.$showModal(RegularVue, { fullscreen: true }).then((res) => {
+        this.regulares = false;
+        this.finales = false;
+      });
     },
     bfinales() {
       this.$showModal(FinalesVue, { fullscreen: true }).then((res) => {
         this.regulares = false;
         this.finales = false;
       });
+    },
+    showChoices(){
+      this.regulares = true;
+      this.finales = true;
+      this.$store.commit('UNSET_TRANSITO')
     },
     onScanResult(evt) {
       console.log(`onScanResult: ${evt.text} (${evt.format})`);

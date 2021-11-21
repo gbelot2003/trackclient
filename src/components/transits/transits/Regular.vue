@@ -1,11 +1,11 @@
 <template>
-  <StackLayout class="p-t-20">
+ <StackLayout class="p-t-20">
     <Label class="header" text="Selección de Transito Regular" />
     <GridLayout rows=" *, auto">
       <StackLayout row="0">
         <ListView height="500" class="" for="item in ValueList">
           <v-template>
-            <Label :text="item.display" @tap="selectValue(item.value)" />
+            <Label :text="item.name" @tap="selectValue(item)" />
           </v-template>
         </ListView>
       </StackLayout>
