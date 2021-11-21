@@ -23,7 +23,8 @@ export default {
   name: "Regular",
   methods: {
     selectValue(item) {
-      this.itemId = item;
+      this.$store.commit("SET_TRANSITO", item);
+      this.$modal.close();
     },
     closeModal() {
       this.$modal.close();
@@ -32,10 +33,30 @@ export default {
   data() {
     return {
       ValueList: [
-        { display: "Transito Regular", value: 2 },
-        { display: "Transito Centro de Acopio", value: 3 },
-        { display: "Transito Presenta daños ligeros", value: 4 },
-        { display: "Transito Presenta daños graves", value: 6 },
+        {
+          id: 2,
+          name: "Tránsito, regular",
+          description:
+            "La encomienda a ingresado a la linea de entragas y esta en manos de la empresa de mensajeria.",
+        },
+        {
+          id: 3,
+          name: "Tránsito, Centro de acopio",
+          description:
+            "La encomienda a ingresado a el centro de acopio descrito.",
+        },
+        {
+          id: 4,
+          name: "Tránsito, en bolsa de transporte",
+          description:
+            "El paquete a ingresado a una bolsa para su traslado a destinos posteriores o su entrega.",
+        },
+        {
+          id: 6,
+          name: "Tránsito, presenta daños graves",
+          description:
+            "La encomienda presenta daños severos, sellos violentados, ruturas, contenido roto etc.",
+        },
       ],
     };
   },
