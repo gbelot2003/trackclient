@@ -23,13 +23,35 @@
         />
         <label
           class="code"
-          :text="getCode"
+          :text="getPackage.code"
           width="200"
           verticalAlignment="center"
           horizontalAlignment="center"
         />
         <Button class="auto" text="auto" width="40" @tap="manualCode" />
       </StackLayout>
+
+      <GridLayout rows="auto, auto" columns="*,*">
+        <customers-item
+          row="0"
+          column="0"
+          :item="getSender"
+          title="Emisor"
+          v-if="getPackage.code"
+        />
+        <customers-item
+          row="0"
+          column="1"
+          :item="getReciver"
+          title="Destinatario"
+          v-if="getPackage.code"
+        />
+      </GridLayout>
+      <StackLayout>
+        <Button text="Transitos Normales" @tap="bregulares" v-if="regulares"/>.
+        <Button text="Transitos Finales" @tap="bfinales" v-if="finales"/>
+      </StackLayout>
+      <StackLayout> </StackLayout>
     </StackLayout>
   </Page>
 </template>
@@ -37,24 +59,47 @@
 <script>
 import Home from "../Home.vue";
 import { BarcodeScanner } from "nativescript-barcodescanner";
+import CustomersItem from "./items/CustomersItem.vue";
 const camera = require("@nativescript/camera");
 var geolocation = require("nativescript-geolocation");
 import { Accuracy } from "tns-core-modules/ui/enums";
-const dialogs = require('tns-core-modules/ui/dialogs')
+const dialogs = require("tns-core-modules/ui/dialogs");
+import { ValueList } from "nativescript-drop-down";
+import RegularVue from './transits/Regular.vue';
+import FinalesVue from './transits/Finales.vue';
 
 export default {
   name: "Transaction",
+  components: {
+    CustomersItem,
+  },
+  data() {
+    return {
+      isIOS: "",
+      regulares: false,
+      finales: false,
+    };
+  },
   methods: {
     manualCode() {
-        prompt({
-            title: "Ingrese el numero de Código",
-            message: "Agrega el Numero de código manual",
-            okButtonText: "Enviar",
-            cancelButtonText: "Cancelar",
-            inputType: dialogs.inputType.number
-        }).then(res => {
-            console.log(res.text)
-        })
+      prompt({
+        title: "Ingrese el numero de Código",
+        message: "Agrega el Numero de código manual",
+        okButtonText: "Enviar",
+        cancelButtonText: "Cancelar",
+        inputType: dialogs.inputType.number,
+      }).then((res) => {
+        this.$store.dispatch("SEARCH_CODE", 534110898);
+        this.regulares = true;
+        this.finales = true;
+      });
+    },
+    bregulares() {
+
+      this.$showModal(RegularVue, { fullscreen: true})
+    },
+    bfinales() {
+         this.$showModal(FinalesVue, { fullscreen: true})
     },
     onScanResult(evt) {
       console.log(`onScanResult: ${evt.text} (${evt.format})`);
@@ -98,6 +143,20 @@ export default {
           curve: "ease",
         },
       });
+    },
+  },
+  computed: {
+    getPackage() {
+      return this.$store.getters.getPackage;
+    },
+    getCode() {
+      return this.$store.getters.getPackage.code;
+    },
+    getSender() {
+      return this.$store.getters.getPackage.sender;
+    },
+    getReciver() {
+      return this.$store.getters.getPackage.reciver;
     },
   },
 };

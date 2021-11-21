@@ -45,6 +45,10 @@ export default {
         state.package = payload;
     },
 
+    UNSET_PACKAGE(state){
+        state.package = {}
+    },
+
     SET_REMITENTE(state, payload) {
         state.remitente = payload;
     },

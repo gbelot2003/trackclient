@@ -55,8 +55,9 @@ export default {
     SEARCH_CODE:({ commit, getters}, params) => {
         return new Promise((resolve, reject) => {
             let string = `${server}package-code/${params}`;
-            console.log(string);
+            
             axios.get(string).then((resp) => {
+                console.log(resp.data);
                 commit('SET_PACKAGE', resp.data);
                 resolve(resp.data);
             }).catch(err => {
