@@ -48,10 +48,12 @@
         />
       </GridLayout>
       <StackLayout>
-        <Button text="Transitos Normales" @tap="bregulares" v-if="regulares"/>.
-        <Button text="Transitos Finales" @tap="bfinales" v-if="finales"/>
+        <Button text="Transitos Normales" @tap="bregulares" v-if="regulares" />.
+        <Button text="Transitos Finales" @tap="bfinales" v-if="finales" />
       </StackLayout>
-      <StackLayout> </StackLayout>
+      <StackLayout>
+        <Label :text="getTransito" v-if="getTransito" />
+      </StackLayout>
     </StackLayout>
   </Page>
 </template>
@@ -65,8 +67,8 @@ var geolocation = require("nativescript-geolocation");
 import { Accuracy } from "tns-core-modules/ui/enums";
 const dialogs = require("tns-core-modules/ui/dialogs");
 import { ValueList } from "nativescript-drop-down";
-import RegularVue from './transits/Regular.vue';
-import FinalesVue from './transits/Finales.vue';
+import RegularVue from "./transits/Regular.vue";
+import FinalesVue from "./transits/Finales.vue";
 
 export default {
   name: "Transaction",
@@ -95,11 +97,13 @@ export default {
       });
     },
     bregulares() {
-
-      this.$showModal(RegularVue, { fullscreen: true})
+      this.$showModal(RegularVue, { fullscreen: true });
     },
     bfinales() {
-         this.$showModal(FinalesVue, { fullscreen: true})
+      this.$showModal(FinalesVue, { fullscreen: true }).then((res) => {
+        this.regulares = false;
+        this.finales = false;
+      });
     },
     onScanResult(evt) {
       console.log(`onScanResult: ${evt.text} (${evt.format})`);
@@ -125,10 +129,11 @@ export default {
           },
         })
         .then((result) => {
-          let that = this;
           // Cambiar accion por la necesaria
           console.log(result.text);
-          //that.$store.commit("SET_CODE", result.text);
+          this.$store.dispatch("SEARCH_CODE", result.text);
+          this.regulares = true;
+          this.finales = true;
         })
         .catch((err) => {
           alert("No Code in database");
@@ -157,6 +162,9 @@ export default {
     },
     getReciver() {
       return this.$store.getters.getPackage.reciver;
+    },
+    getTransito() {
+      return this.$store.getters.getTransito;
     },
   },
 };

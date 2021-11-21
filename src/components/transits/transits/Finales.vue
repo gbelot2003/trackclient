@@ -23,7 +23,8 @@ export default {
   name: "Regular",
   methods: {
     selectValue(item) {
-      this.itemId = item;
+      this.$store.commit('SET_TRANSITO', item)
+      this.$modal.close();
     },
     closeModal() {
       this.$modal.close();

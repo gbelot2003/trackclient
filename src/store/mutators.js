@@ -91,5 +91,13 @@ export default {
 
     SET_IMAGE(state, payload) {
         state.image = payload
-    }
+    },
+
+    SET_TRANSITO(state, payload) {
+        state.transito = payload
+    },
+
+    UNSET_TRANSITO(state) {
+        state.transito = ''
+    },
 }

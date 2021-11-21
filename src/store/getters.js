@@ -55,4 +55,8 @@ export default {
         return state.image
     },
 
+    getTransito(state) {
+        return state.transito
+    },
+
 }
