@@ -52,11 +52,25 @@
         <Button text="Transitos Finales" @tap="bfinales" v-if="finales" />
       </StackLayout>
       <StackLayout>
-        <transito-item :item="getTransito" v-if="getTransito" v-on:choice="showChoices"/>
+        <transito-item
+          :item="getTransito"
+          v-if="getTransito"
+          v-on:choice="showChoices"
+        />
       </StackLayout>
       <StackLayout>
-        <TextView v-if="getTransito" class="form" hint="Detalles" v-model="details" />
-        <Button v-if="getTransito" text="Registras" class="btn-primary" />
+        <TextView
+          v-if="getTransito"
+          class="form"
+          hint="Detalles"
+          v-model="details"
+        />
+        <Button
+          v-if="getTransito"
+          text="Registras"
+          class="btn-primary"
+          @tap="SubmitPackage"
+        />
       </StackLayout>
     </StackLayout>
   </Page>
@@ -74,6 +88,9 @@ import { ValueList } from "nativescript-drop-down";
 import RegularVue from "./transits/Regular.vue";
 import FinalesVue from "./transits/Finales.vue";
 import TransitoItem from "./transits/TransitoItem.vue";
+import Exit from "./modals/Exit.vue";
+import axios from "axios/dist/axios";
+
 
 export default {
   name: "Transaction",
@@ -86,10 +103,46 @@ export default {
       isIOS: "",
       regulares: false,
       finales: false,
-      details: '',
+      details: "",
+      latitude: "",
+      longitude: "",
     };
   },
+  mounted() {
+    geolocation.enableLocationRequest().then(() => {
+      this.getGeolocation();
+    });
+  },
   methods: {
+    SubmitPackage() {
+      let data = {
+        packages_id: this.getPackage.id,
+        longitude: this.longitude,
+        latitude: this.latitude,
+        state_id: this.getTransito.id,
+        details: this.details,
+      };
+
+      console.log(data);
+
+      axios
+        .post("http://192.168.5.108/api/transitos", data, {
+          headers: {
+            Accept: "application/json",
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.exitModal();
+        })
+        .catch((err) => {
+          console.log(err);
+          //this.exitModal();
+          alert(
+            "No has llenado todos los campos o hay un error en la operación"
+          );
+        });
+    },
     manualCode() {
       prompt({
         title: "Ingrese el numero de Código",
@@ -115,10 +168,10 @@ export default {
         this.finales = false;
       });
     },
-    showChoices(){
+    showChoices() {
       this.regulares = true;
       this.finales = true;
-      this.$store.commit('UNSET_TRANSITO')
+      this.$store.commit("UNSET_TRANSITO");
     },
     onScanResult(evt) {
       console.log(`onScanResult: ${evt.text} (${evt.format})`);
@@ -163,6 +216,39 @@ export default {
           curve: "ease",
         },
       });
+    },
+    getGeolocation() {
+      setInterval(() => {
+        geolocation
+          .getCurrentLocation({
+            desiredAccuracy: Accuracy.high,
+            maximumAge: 5000,
+            timeout: 20000,
+          })
+          .then((res) => {
+            let that = this;
+            this.latitude = res.latitude;
+            this.longitude = res.longitude;
+          });
+      }, 2000);
+    },
+    exitModal() {
+      this.$showModal(Exit).then((res) => {
+        if (res === "continuar") {
+          this.clear();
+        } else {
+          this.clear();
+          this.barBack();
+        }
+      });
+    },
+    clear() {
+      this.$store.commit("UNSET_PACKAGE");
+      this.$store.commit("UNSET_CODE");
+      this.$store.commit("UNSET_TRANSITO");
+      this.detalles = "";
+      this.latitude = "";
+      this.longitude = "";
     },
   },
   computed: {
