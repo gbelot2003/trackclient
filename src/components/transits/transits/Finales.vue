@@ -24,10 +24,10 @@ export default {
   methods: {
     selectValue(item) {
       this.$store.commit("SET_TRANSITO", item);
-      this.$modal.close();
+      this.$modal.close("alive");
     },
     closeModal() {
-      this.$modal.close();
+      this.$modal.close("close");
     },
   },
   data() {

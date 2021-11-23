@@ -91,7 +91,6 @@ import TransitoItem from "./transits/TransitoItem.vue";
 import Exit from "./modals/Exit.vue";
 import axios from "axios/dist/axios";
 
-
 export default {
   name: "Transaction",
   components: {
@@ -150,22 +149,31 @@ export default {
         okButtonText: "Enviar",
         cancelButtonText: "Cancelar",
         inputType: dialogs.inputType.number,
-      }).then((res) => {
-        this.$store.dispatch("SEARCH_CODE", 534110898);
-        this.regulares = true;
-        this.finales = true;
-      });
+      })
+        .then((res) => {
+          this.$store.dispatch("SEARCH_CODE", 1019763503).then((resp) => {
+            this.regulares = true;
+            this.finales = true;
+          });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
     bregulares() {
       this.$showModal(RegularVue, { fullscreen: true }).then((res) => {
-        this.regulares = false;
-        this.finales = false;
+        if (res !== "close") {
+          this.regulares = false;
+          this.finales = false;
+        }
       });
     },
     bfinales() {
       this.$showModal(FinalesVue, { fullscreen: true }).then((res) => {
-        this.regulares = false;
-        this.finales = false;
+        if (res !== "close") {
+          this.regulares = false;
+          this.finales = false;
+        }
       });
     },
     showChoices() {
