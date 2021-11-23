@@ -3,8 +3,12 @@
     <ActionBar title="TrackingHn" />
     <StackLayout>
       <Button class="menu-btn" @tap="newPackage" text="Nuevo Paquete"></Button>
-      <Button class="menu-btn" @tap="transaction" text="Nuevo Transito"></Button>
-      <Button class="menu-btn" text="Nueva Bolsa"></Button>
+      <Button
+        class="menu-btn"
+        @tap="transaction"
+        text="Nuevo Transito"
+      ></Button>
+      <Button class="menu-btn" @tap="newBags" text="Nueva Bolsa"></Button>
       <Button class="menu-btn" text="Transito Bolsa"></Button>
       <Button class="menu-btn" text="Manejar Paquetes en Bolsa"></Button>
       <Button class="menu-btn" text="Buscar"></Button>
@@ -15,9 +19,19 @@
 <script>
 import NewPackage from "./Packages/NewPackage.vue";
 import Transaction from "./transits/Transaction.vue";
+import NewBag from "./Bags/NewBags.vue";
 
 export default {
   methods: {
+    newBags() {
+      this.$navigateTo(NewBag, {
+        trasition: {
+          name: "slide",
+          duration: 200,
+          curve: "ease",
+        },
+      });
+    },
     transaction() {
       this.$navigateTo(Transaction, {
         trasition: {
