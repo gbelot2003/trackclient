@@ -108,6 +108,7 @@ import Exit from "./modals/Exit.vue";
 const camera = require("@nativescript/camera");
 var geolocation = require("nativescript-geolocation");
 import { Accuracy } from "tns-core-modules/ui/enums"; 
+import server from '../../env.dev'
 
 export default {
   name: "NewPackage",
@@ -200,7 +201,7 @@ export default {
 
       console.log(data);
       axios
-        .post("http://192.168.5.108/api/packages", data, {
+        .post(server + "packages", data, {
           headers: {
             Accept: "application/json",
           },

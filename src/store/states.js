@@ -12,6 +12,8 @@ export default {
     package: {},
     remitente:{},
     destinatario:{},
+    remitenteBag:{},
+    destinatarioBag:{},
     tipo: {},
     image: '',
     agencia: {},

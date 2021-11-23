@@ -1,10 +1,7 @@
 <template>
   <Page>
-    <ActionBar title="Crear Nuevo Cliente">
-      <NavigationButton
-        android.systemIcon="ic_menu_back"
-        @tap="goBack"
-      />
+    <ActionBar title="Crear Nuevo Cliente bag1">
+      <NavigationButton android.systemIcon="ic_menu_back" @tap="goBack" />
     </ActionBar>
     <StackLayout>
       <GridLayout rows="auto, *, auto">
@@ -41,16 +38,15 @@
 </template>
 
 <script>
-import NewPackage from "../Packages/NewPackage.vue";
+import NewBags from "../Bags/NewBags.vue";
 import SelectSettement from "../Settlement/SelectSettement.vue";
 import SelectSection from "../Sections/SelectSection.vue";
 import SettlementItems from "./items/SettlementItems.vue";
 import SectionItems from "./items/SectionItems.vue";
-import axios from "axios/dist/axios";
 import server from '../../env.dev'
 
 export default {
-  name: "CreateClient",
+  name: "CreateClientBag",
   props: ["plantilla"],
   components: {
     SettlementItems,
@@ -89,6 +85,7 @@ export default {
         settlement_id: this.getAgencia.id,
         section_id: this.getSeccion.id,
       };
+      console.log(data);
 
       axios
         .post(server + "clientes", data)
@@ -109,7 +106,7 @@ export default {
         });
     },
     goBack() {
-      this.$navigateTo(NewPackage, {
+      this.$navigateTo(NewBags, {
         trasition: {
           name: "slide",
           duration: 200,

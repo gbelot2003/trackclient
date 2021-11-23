@@ -35,8 +35,16 @@ export default {
         return state.remitente
     },
 
+    getRemitenteBag(state) {
+        return state.remitenteBag
+    },
+
     getDestinatario(state) {
         return state.destinatario
+    },
+
+    getDestinatarioBag(state) {
+        return state.destinatarioBag
     },
 
     getTipo(state) {

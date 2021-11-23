@@ -36,6 +36,7 @@
 import axios from "axios/dist/axios";
 import CreateClient from "../Customers/CreateClient.vue";
 import CreateSeccion from "./CreateSection.vue";
+import server from '../../env.dev'
 
 export default {
   name: "SelectSection",
@@ -54,7 +55,7 @@ export default {
     selected(item) {
       console.log(item);
       this.$store.commit("SET_SECCION", item);
-      this.$navigateTo(CreateClient, {
+      this.$navigateBack({
         trasition: {
           name: "slide",
           duration: 200,
@@ -63,14 +64,14 @@ export default {
       });
     },
     fecthSections() {
-      axios.get("http://192.168.5.108/api/secciones").then((rest) => {
+      axios.get(server + "secciones").then((rest) => {
         console.log(rest.data);
         this.secciones = rest.data;
       });
     },
     onTextChange(arg) {
       axios
-        .get("http://192.168.5.108/api/secciones?string=" + arg.value)
+        .get(server + "secciones?string=" + arg.value)
         .then((rest) => {
           console.log(rest.data);
           this.secciones = rest.data;

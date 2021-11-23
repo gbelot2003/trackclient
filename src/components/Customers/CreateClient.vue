@@ -47,6 +47,7 @@ import SelectSection from "../Sections/SelectSection.vue";
 import SettlementItems from "./items/SettlementItems.vue";
 import SectionItems from "./items/SectionItems.vue";
 import axios from "axios/dist/axios";
+import server from '../../env.dev'
 
 export default {
   name: "CreateClient",
@@ -90,7 +91,7 @@ export default {
       };
 
       axios
-        .post("http://192.168.5.108/api/clientes", data)
+        .post(server + "clientes", data)
         .then((res) => {
           console.log(res.data);
           (data = {}), this.$store.commit("SET_REMITENTE", res.data);

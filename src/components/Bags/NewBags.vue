@@ -96,9 +96,8 @@
 <script>
 import Home from "../Home.vue";
 import TypeItem from "./items/TypeItem.vue";
-import SearchReciber from "../Customers/SearchReciver.vue";
-import SearchSender from "../Customers/SearchSender.vue";
-import SearchType from "../Types/SearchType.vue";
+import SearchSender from "../Customers/SearchSenderBags.vue";
+import SearchReciber from "../Customers/SearchReciverBags.vue";
 import CustomersItem from "./items/CustomersItem.vue";
 import { BarcodeScanner } from "nativescript-barcodescanner";
 import axios from "axios/dist/axios";
@@ -106,9 +105,10 @@ import Exit from "./modals/Exit.vue";
 const camera = require("@nativescript/camera");
 var geolocation = require("nativescript-geolocation");
 import { Accuracy } from "tns-core-modules/ui/enums"; 
+import server from "../../env.dev"
 
 export default {
-  name: "NewPackage",
+  name: "NewBags",
   data() {
     return {
       isIOS: "",
@@ -133,10 +133,10 @@ export default {
       return this.$store.getters.getCode;
     },
     getRemitente() {
-      return this.$store.getters.getRemitente;
+      return this.$store.getters.getRemitenteBag;
     },
     getDestinatario() {
-      return this.$store.getters.getDestinatario;
+      return this.$store.getters.getDestinatarioBag;
     },
     getTipo() {
       return this.$store.getters.getTipo;
@@ -184,19 +184,19 @@ export default {
     SubmitPackage() {
       let data = {
         code: this.getCode,
-        user_id: 1,
-        state_id: 2,
+        state_id: 3,
         latitude: this.latitude,
         longitude: this.longitude,
-        send_id: this.getRemitente.id,
-        recive_id: this.getDestinatario.id,
+        settlement_sender_id: this.getRemitente.id,
+        settlement_reciver_id: this.getDestinatario.id,
         description: this.detalles,
         image: this.getImage,
       };
 
       console.log(data);
+      
       axios
-        .post("http://192.168.5.108/api/packages", data, {
+        .post(server + "bolsas", data, {
           headers: {
             Accept: "application/json",
           },
@@ -212,6 +212,7 @@ export default {
             "No has llenado todos los campos o hay un error en la operación"
           );
         });
+        
     },
 
     onScanResult(evt) {
@@ -249,7 +250,7 @@ export default {
         });
     },
     sendCode() {
-      this.$store.dispatch("SEARCH_CODE", 439224452);
+      this.$store.dispatch("SEARCH_BAG_CODE", 439224452);
     },
     autocode() {
       let code = Math.floor(Math.random() * 999999999) + 111111111;

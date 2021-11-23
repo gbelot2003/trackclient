@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <ActionBar title="Busqueda de Destiinatario">
+    <ActionBar title="Busqueda de Destinatario">
       <NavigationButton android.systemIcon="ic_menu_back" @tap="goBack" />
     </ActionBar>
     <StackLayout>
@@ -28,13 +28,13 @@
 </template>
 
 <script>
-import NewPackage from "../Packages/NewPackage.vue";
+import NewPackage from "../Bags/NewBags.vue";
 import axios from "axios/dist/axios";
-import CreateClient from "./CreateClientDest.vue"
+import CreateClient from "./CreateClientDestBag.vue"
 import server from '../../env.dev'
 
 export default {
-  name: "SearchSender",
+  name: "SearchReciverbags",
   data() {
     return {
       clientes: [],

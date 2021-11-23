@@ -65,6 +65,22 @@ export default {
         state.destinatario = {}
     },
 
+    SET_REMITENTEBAG(state) {
+        state.remitenteBag = {};
+    },
+
+    UNSET_REMITENTEBAG(state) {
+        state.remitenteBag = {};
+    },
+
+    SET_DESTINATARIOBAG(state, payload) {
+        state.destinatarioBag = payload;
+    },
+
+    UNSET_DESTINATARIOBag(state) {
+        state.destinatarioBag = {}
+    },
+
     SET_TIPO(state, payload) {
         state.tipo = payload;
     },

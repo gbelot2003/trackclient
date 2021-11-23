@@ -1,26 +1,30 @@
 <template>
   <Page>
-    <ActionBar title="Busqueda de Destiinatario">
+    <ActionBar title="Busqueda de Remitente">
       <NavigationButton android.systemIcon="ic_menu_back" @tap="goBack" />
     </ActionBar>
     <StackLayout>
       <GridLayout rows="auto, *, auto">
         <StackLayout row="0">
-          <TextField class="input-field input" hint="Buscar de Cliente" />
+          <TextField
+            class="input-field input"
+            hint="Buscar de Cliente"
+            @textChange="onTextChange"
+          />
         </StackLayout>
         <StackLayout row="1">
           <ListView height="500" class="" for="item in clientes.data">
             <v-template>
               <StackLayout class="cliente" @tap="selected(item)">
                 <label class="h6" :text="item.name" />
-                <label class="agencia" :text="item.identity" />
+                <label class="agencia" :text="item.identaity" />
                 <label class="seccion" text="Seccion del Cliente" />
               </StackLayout>
             </v-template>
           </ListView>
         </StackLayout>
         <StackLayout row="2">
-           <button class="btn primary" text="Nuevo Cliente" @tap="createClient"/>
+          <button class="btn primary" text="Nuevo Cliente" @tap="createClient"/>
         </StackLayout>
       </GridLayout>
     </StackLayout>
@@ -28,13 +32,13 @@
 </template>
 
 <script>
-import NewPackage from "../Packages/NewPackage.vue";
+import NewBags from "../Bags/NewBags.vue";
 import axios from "axios/dist/axios";
-import CreateClient from "./CreateClientDest.vue"
+import CreateClient from "./ClientBag.vue"
 import server from '../../env.dev'
 
 export default {
-  name: "SearchSender",
+  name: "SearchSenderBags",
   data() {
     return {
       clientes: [],
@@ -44,19 +48,19 @@ export default {
     this.getClientes();
   },
   methods: {
-    createClient() {
-      this.$navigateTo(CreateClient, {
+    createClient(){
+       this.$navigateTo(CreateClient, {
         trasition: {
           name: "slide",
           duration: 200,
           curve: "ease",
-        },
+        }, 
       });
     },
     selected(item) {
       console.log(item);
-      this.$store.commit("SET_DESTINATARIO", item);
-      this.$navigateTo(NewPackage, {
+      this.$store.commit("SET_REMITENTE", item);
+      this.$navigateTo(NewBags, {
         trasition: {
           name: "slide",
           duration: 200,
@@ -70,8 +74,15 @@ export default {
         this.clientes = rest.data;
       });
     },
+    onTextChange(arg) {
+      axios.get(server + "clientes?string=" + arg.value).then((rest) => {
+        console.log(rest.data);
+        this.clientes = rest.data;
+      });
+      
+    },
     goBack() {
-      this.$navigateTo(NewPackage, {
+      this.$navigateTo(NewBags, {
         trasition: {
           name: "slide",
           duration: 200,

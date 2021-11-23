@@ -37,6 +37,7 @@
 import axios from "axios/dist/axios";
 import CreateClient from "../Customers/CreateClient.vue";
 import CreateSettlement from './CreateSettlement.vue';
+import server from '../../env.dev'
 
 export default {
   name: "SelectSettement",
@@ -56,7 +57,7 @@ export default {
     selected(item) {
       console.log(item);
       this.$store.commit("SET_AGENCIA", item);
-      this.$navigateTo(CreateClient, {
+      this.$navigateBack({
         trasition: {
           name: "slide",
           duration: 200,
@@ -65,14 +66,14 @@ export default {
       });
     },
     getAgencias() {
-      axios.get("http://192.168.5.108/api/agencias").then((rest) => {
+      axios.get(server + "agencias").then((rest) => {
         console.log(rest.data);
         this.agencias = rest.data;
       });
     },
     onTextChange(arg) {
       axios
-        .get("http://192.168.5.108/api/agencias?string=" + arg.value)
+        .get(server + "agencias?string=" + arg.value)
         .then((rest) => {
           console.log(rest.data);
           this.agencias = rest.data;

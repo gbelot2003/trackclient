@@ -46,6 +46,7 @@
 import axios from "axios/dist/axios";
 import { ValueList } from "nativescript-drop-down";
 import CreateClient from "../Customers/CreateClient.vue";
+import server from '../../env.dev'
 
 export default {
   name: "CreateSettlement",
@@ -65,14 +66,14 @@ export default {
 
   methods: {
     loaded() {
-      axios.get("http://192.168.5.108/api/departamentos").then((res) => {
+      axios.get(server + "departamentos").then((res) => {
         this.departamentos = new ValueList(res.data);
       });
     },
     SelectedDeptChange(args) {
       let number = args.newIndex + 1;
       this.fields.department_id = number;
-      axios.get("http://192.168.5.108/api/municipios/" + number).then((res) => {
+      axios.get(server +  "municipios/" + number).then((res) => {
         console.log(res.data);
         this.showMunic = true;
         this.municipios = new ValueList(res.data);
@@ -84,7 +85,7 @@ export default {
     },
     saveData() {
       axios
-        .post("http://192.168.5.108/api/agencias", this.fields)
+        .post(server + "agencias", this.fields)
         .then((res) => {
           console.log(res.data);
           this.$store.commit("SET_AGENCIA", res.data);

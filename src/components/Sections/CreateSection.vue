@@ -26,6 +26,7 @@
 <script>
 import axios from "axios/dist/axios";
 import CreateClient from "../Customers/CreateClient.vue";
+import server from '../../env.dev'
 
 export default {
   name: "CreateSettlement",
@@ -40,7 +41,7 @@ export default {
   methods: {
     saveData() {
       axios
-        .post("http://192.168.5.108/api/secciones", this.fields)
+        .post(server + "secciones", this.fields)
         .then((res) => {
           console.log(res.data);
           this.$store.commit("SET_SECCION", res.data);

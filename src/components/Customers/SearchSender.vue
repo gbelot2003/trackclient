@@ -35,6 +35,7 @@
 import NewPackage from "../Packages/NewPackage.vue";
 import axios from "axios/dist/axios";
 import CreateClient from "./CreateClient.vue"
+import server from '../../env.dev'
 
 export default {
   name: "SearchSender",
@@ -68,13 +69,13 @@ export default {
       });
     },
     getClientes() {
-      axios.get("http://192.168.5.108/api/clientes").then((rest) => {
+      axios.get(server + "clientes").then((rest) => {
         console.log(rest.data);
         this.clientes = rest.data;
       });
     },
     onTextChange(arg) {
-      axios.get("http://192.168.5.108/api/clientes?string=" + arg.value).then((rest) => {
+      axios.get(server + "clientes?string=" + arg.value).then((rest) => {
         console.log(rest.data);
         this.clientes = rest.data;
       });
