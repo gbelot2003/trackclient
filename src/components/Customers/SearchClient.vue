@@ -17,8 +17,8 @@
             <v-template>
               <StackLayout class="cliente" @tap="selected(item)">
                 <label class="h6" :text="item.name" />
-                <label class="agencia" :text="item.identaity" />
-                <label class="seccion" text="Seccion del Cliente" />
+                <label class="agencia" :text="item.identity" v-if="item.identity" />
+                <label class="seccion" :text="item.section.name" />
               </StackLayout>
             </v-template>
           </ListView>
@@ -69,6 +69,7 @@ export default {
       });
     },
     selected(item) {
+      console.log(item)
       if (this.tipo === "sender") {
         this.$store.commit("SET_REMITENTE", item);
       } else if (this.tipo === "reciver") {
@@ -101,7 +102,7 @@ export default {
       }
 
       axios.get(server + "clientes").then((rest) => {
-        //console.log(rest.data);
+        console.log(rest.data);
         this.clientes = rest.data;
       });
     },

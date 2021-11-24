@@ -3,7 +3,7 @@
     <StackLayout class="item" col="0">
       <label class="h5 title" :text="title"></label>
       <label class="h6 label" :text="item.name"></label>
-      <label class="label" :text="item.identity"></label>
+      <label class="label" :text="item.identity" v-if="item.identity"></label>
       <settlement :settlement="item.settlement"></settlement>
       <section :section="item.section"></section>
     </StackLayout>
