@@ -94,8 +94,7 @@ export default {
                     Authorization: getters.getAccessToken
                 }
             }).then((resp) => {
-                console.log(resp.data);
-                commit('SET_PACKAGE', resp.data);//
+                commit('SET_BAG', resp.data);
                 resolve(resp.data);
             }).catch(err => {
                 reject(err)

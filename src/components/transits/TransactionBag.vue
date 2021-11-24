@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <ActionBar title="Nuevo Transito de Paquete">
+    <ActionBar title="Nuevo Transito de Bolsas">
       <NavigationButton android.systemIcon="ic_menu_back" @tap="barBack" />
     </ActionBar>
     <StackLayout>
@@ -23,28 +23,27 @@
         />
         <label
           class="code"
-          :text="getPackage.code"
+          text=""
           width="200"
           verticalAlignment="center"
           horizontalAlignment="center"
         />
         <Button class="auto" text="manu" width="50" @tap="manualCode" />
       </StackLayout>
-
       <GridLayout rows="auto, auto" columns="*,*">
         <customers-item
           row="0"
           column="0"
           :item="getSender"
           title="Emisor"
-          v-if="getPackage.code"
+          v-if="getBag.code"
         />
         <customers-item
           row="0"
           column="1"
           :item="getReciver"
           title="Destinatario"
-          v-if="getPackage.code"
+          v-if="getBag.code"
         />
       </GridLayout>
       <StackLayout>
@@ -71,6 +70,7 @@
           class="btn-primary"
           @tap="SubmitPackage"
         />
+        <Button v-if="getTransito" text="Cancelar" @tap="clear" />
       </StackLayout>
     </StackLayout>
   </Page>
@@ -79,31 +79,24 @@
 <script>
 import Home from "../Home.vue";
 import { BarcodeScanner } from "nativescript-barcodescanner";
-import CustomersItem from "./items/CustomersItem.vue";
-const camera = require("@nativescript/camera");
+import TransitoItem from "./transits/TransitoItem.vue";
+import CustomersItem from "./items/CustomersBagItem.vue";
+import RegularVue from "./transits/Regular.vue";
+import FinalesVue from "./transits/Finales.vue";
 var geolocation = require("nativescript-geolocation");
 import { Accuracy } from "tns-core-modules/ui/enums";
 const dialogs = require("tns-core-modules/ui/dialogs");
-import { ValueList } from "nativescript-drop-down";
-import RegularVue from "./transits/Regular.vue";
-import FinalesVue from "./transits/Finales.vue";
-import TransitoItem from "./transits/TransitoItem.vue";
 import Exit from "./modals/Exit.vue";
 import axios from "axios/dist/axios";
-import server from '../../env.dev'
+import server from "../../env.dev";
 
 export default {
-  name: "Transaction",
-  components: {
-    CustomersItem,
-    TransitoItem,
-  },
+  name: "TransactionBag",
   data() {
     return {
       isIOS: "",
       regulares: false,
       finales: false,
-      details: "",
       latitude: "",
       longitude: "",
     };
@@ -113,10 +106,32 @@ export default {
       this.getGeolocation();
     });
   },
+  components: {
+    CustomersItem,
+    TransitoItem,
+  },
+  computed: {
+    getBag() {
+      return this.$store.getters.getBag;
+    },
+    getCode() {
+      return this.$store.getters.getBag.code;
+    },
+    getSender() {
+      return this.$store.getters.getBag.sender;
+    },
+    getReciver() {
+      return this.$store.getters.getBag.reciver;
+    },
+    getTransito() {
+      return this.$store.getters.getTransito;
+    },
+  },
+
   methods: {
     SubmitPackage() {
       let data = {
-        packages_id: this.getPackage.id,
+        bag_id: this.getBag.id,
         longitude: this.longitude,
         latitude: this.latitude,
         state_id: this.getTransito.id,
@@ -126,7 +141,7 @@ export default {
       console.log(data);
 
       axios
-        .post(server + "transitos", data, {
+        .post(server + "transitos-bolsas", data, {
           headers: {
             Accept: "application/json",
           },
@@ -141,24 +156,6 @@ export default {
           alert(
             "No has llenado todos los campos o hay un error en la operación"
           );
-        });
-    },
-    manualCode() {
-      prompt({
-        title: "Ingrese el numero de Código",
-        message: "Agrega el Numero de código manual",
-        okButtonText: "Enviar",
-        cancelButtonText: "Cancelar",
-        inputType: dialogs.inputType.number,
-      })
-        .then((res) => {
-          this.$store.dispatch("SEARCH_CODE", 1019763503).then((resp) => {
-            this.regulares = true;
-            this.finales = true;
-          });
-        })
-        .catch((e) => {
-          console.log(e);
         });
     },
     bregulares() {
@@ -176,6 +173,24 @@ export default {
           this.finales = false;
         }
       });
+    },
+    manualCode() {
+      prompt({
+        title: "Ingrese el numero de Código",
+        message: "Agrega el Numero de código manual",
+        okButtonText: "Enviar",
+        cancelButtonText: "Cancelar",
+        inputType: dialogs.inputType.number,
+      })
+        .then((res) => {
+          this.$store.dispatch("SEARCH_BAG_CODE", 956025205).then((resp) => {
+            this.regulares = true;
+            this.finales = true;
+          });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
     showChoices() {
       this.regulares = true;
@@ -208,7 +223,7 @@ export default {
         .then((result) => {
           // Cambiar accion por la necesaria
           console.log(result.text);
-          this.$store.dispatch("SEARCH_CODE", result.text);
+          this.$store.dispatch("SEARCH_BAG_CODE", result.text);
           this.regulares = true;
           this.finales = true;
         })
@@ -216,15 +231,6 @@ export default {
           alert("No Code in database");
           console.log("No scan. " + err);
         });
-    },
-    barBack() {
-      this.$navigateTo(Home, {
-        trasition: {
-          name: "slide",
-          duration: 200,
-          curve: "ease",
-        },
-      });
     },
     getGeolocation() {
       setInterval(() => {
@@ -252,35 +258,27 @@ export default {
       });
     },
     clear() {
-      this.$store.commit("UNSET_PACKAGE");
+      this.$store.commit("UNSET_BAG");
       this.$store.commit("UNSET_CODE");
       this.$store.commit("UNSET_TRANSITO");
       this.detalles = "";
       this.latitude = "";
       this.longitude = "";
     },
-  },
-  computed: {
-    getPackage() {
-      return this.$store.getters.getPackage;
-    },
-    getCode() {
-      return this.$store.getters.getPackage.code;
-    },
-    getSender() {
-      return this.$store.getters.getPackage.sender;
-    },
-    getReciver() {
-      return this.$store.getters.getPackage.reciver;
-    },
-    getTransito() {
-      return this.$store.getters.getTransito;
+    barBack() {
+      this.$navigateTo(Home, {
+        trasition: {
+          name: "slide",
+          duration: 200,
+          curve: "ease",
+        },
+      });
     },
   },
 };
 </script>
 
-<style scoped>
+<style>
 .scan {
   margin: 0 auto;
   background-color: darkslategray;

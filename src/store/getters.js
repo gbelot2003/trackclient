@@ -31,6 +31,10 @@ export default {
         return state.package
     },
 
+    getBag(state) {
+        return state.bag
+    },
+
     getRemitente(state) {
         return state.remitente
     },

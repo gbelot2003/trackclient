@@ -49,6 +49,14 @@ export default {
         state.package = {}
     },
 
+    SET_BAG(state, payload){
+        state.bag = payload
+    },
+
+    UNSET_BAG(state) {
+        state.bag = {}
+    },
+
     SET_REMITENTE(state, payload) {
         state.remitente = payload;
     },
