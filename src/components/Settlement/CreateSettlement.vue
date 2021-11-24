@@ -75,16 +75,22 @@ export default {
       let number = args.newIndex + 1;
       this.fields.department_id = number;
       axios.get(server + "municipios/" + number).then((res) => {
-        console.log(res.data);
+        
         this.showMunic = true;
         this.municipios = new ValueList(res.data);
+        console.log(this.municipios);
       });
     },
     SelectedMunicChage(args) {
-      let number = args.newIndex + 1;
-      this.fields.municipality_id = number;
+      let index = args.newIndex;
+      let muni = this.municipios._array
+      this.fields.municipality_id = muni[index].value;
+      console.log(muni[index]);
     },
     saveData() {
+
+      console.log(this.fields)
+      
       axios.post(server + "agencias", this.fields).then((res) => {
         console.log(res.data);
         this.$store.commit("SET_AGENCIA", res.data);
@@ -102,7 +108,7 @@ export default {
         this.$modal.close();
       });
 
-      //
+      
     },
     closeModal() {
       this.$modal.close();
