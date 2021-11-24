@@ -36,8 +36,8 @@
 <script>
 import axios from "axios/dist/axios";
 import CreateClient from "../Customers/CreateClient.vue";
-import CreateSettlement from './CreateSettlement.vue';
-import server from '../../env.dev'
+import CreateSettlement from "./CreateSettlement.vue";
+import server from "../../env.dev";
 
 export default {
   name: "SelectSettement",
@@ -46,13 +46,16 @@ export default {
       agencias: [],
     };
   },
-
+  props: ["tipo", "fuente"],
   mounted() {
     this.getAgencias();
   },
   methods: {
-    showModal(){
-      this.$showModal(CreateSettlement, { fullscreen: true})
+    showModal() {
+      this.$showModal(CreateSettlement, {
+        fullscreen: true,
+        props: { tipo: this.tipo, fuente: this.fuente },
+      });
     },
     selected(item) {
       console.log(item);
@@ -63,6 +66,10 @@ export default {
           duration: 200,
           curve: "ease",
         },
+        props: {
+          tipo: this.tipo,
+          fuente: this.fuente,
+        },
       });
     },
     getAgencias() {
@@ -72,12 +79,10 @@ export default {
       });
     },
     onTextChange(arg) {
-      axios
-        .get(server + "agencias?string=" + arg.value)
-        .then((rest) => {
-          console.log(rest.data);
-          this.agencias = rest.data;
-        });
+      axios.get(server + "agencias?string=" + arg.value).then((rest) => {
+        console.log(rest.data);
+        this.agencias = rest.data;
+      });
     },
   },
 };

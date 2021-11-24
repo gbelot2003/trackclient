@@ -46,10 +46,11 @@
 import axios from "axios/dist/axios";
 import { ValueList } from "nativescript-drop-down";
 import CreateClient from "../Customers/CreateClient.vue";
-import server from '../../env.dev'
+import server from "../../env.dev";
 
 export default {
   name: "CreateSettlement",
+  props: ["tipo", "fuente"],
   data() {
     return {
       fields: {
@@ -73,7 +74,7 @@ export default {
     SelectedDeptChange(args) {
       let number = args.newIndex + 1;
       this.fields.department_id = number;
-      axios.get(server +  "municipios/" + number).then((res) => {
+      axios.get(server + "municipios/" + number).then((res) => {
         console.log(res.data);
         this.showMunic = true;
         this.municipios = new ValueList(res.data);
@@ -84,20 +85,22 @@ export default {
       this.fields.municipality_id = number;
     },
     saveData() {
-      axios
-        .post(server + "agencias", this.fields)
-        .then((res) => {
-          console.log(res.data);
-          this.$store.commit("SET_AGENCIA", res.data);
-          this.$navigateTo(CreateClient, {
-            trasition: {
-              name: "slide",
-              duration: 200,
-              curve: "ease",
-            },
-          });
-          this.$modal.close();
+      axios.post(server + "agencias", this.fields).then((res) => {
+        console.log(res.data);
+        this.$store.commit("SET_AGENCIA", res.data);
+        this.$navigateTo(CreateClient, {
+          trasition: {
+            name: "slide",
+            duration: 200,
+            curve: "ease",
+          },
+          props: {
+            tipo: this.tipo,
+            fuente: this.fuente,
+          },
         });
+        this.$modal.close();
+      });
 
       //
     },
@@ -122,5 +125,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

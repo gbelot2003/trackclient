@@ -42,6 +42,7 @@ import NewPackage from "../Packages/NewPackage.vue";
 import NewBags from "../Bags/NewBags.vue";
 import SelectSettement from "../Settlement/SelectSettement.vue";
 import SelectSection from "../Sections/SelectSection.vue";
+
 import SettlementItems from "./items/SettlementItems.vue";
 import SectionItems from "./items/SectionItems.vue";
 import axios from "axios/dist/axios";
@@ -72,6 +73,10 @@ export default {
           duration: 200,
           curve: "ease",
         },
+        props: {
+          tipo: this.tipo,
+          fuente: this.fuente,
+        },
       });
     },
     selectSection() {
@@ -80,6 +85,10 @@ export default {
           name: "slide",
           duration: 200,
           curve: "ease",
+        },
+        props: {
+          tipo: this.tipo,
+          fuente: this.fuente,
         },
       });
     },

@@ -26,10 +26,11 @@
 <script>
 import axios from "axios/dist/axios";
 import CreateClient from "../Customers/CreateClient.vue";
-import server from '../../env.dev'
+import server from "../../env.dev";
 
 export default {
   name: "CreateSettlement",
+  props: ["tipo", "funete"],
   data() {
     return {
       fields: {
@@ -40,20 +41,22 @@ export default {
 
   methods: {
     saveData() {
-      axios
-        .post(server + "secciones", this.fields)
-        .then((res) => {
-          console.log(res.data);
-          this.$store.commit("SET_SECCION", res.data);
-          this.$navigateTo(CreateClient, {
-            trasition: {
-              name: "slide",
-              duration: 200,
-              curve: "ease",
-            },
-          });
-          this.$modal.close();
+      axios.post(server + "secciones", this.fields).then((res) => {
+        console.log(res.data);
+        this.$store.commit("SET_SECCION", res.data);
+        this.$navigateTo(CreateClient, {
+          trasition: {
+            name: "slide",
+            duration: 200,
+            curve: "ease",
+          },
+          props: {
+            tipo: this.tipo,
+            fuente: this.fuente,
+          },
         });
+        this.$modal.close();
+      });
 
       //
     },

@@ -40,6 +40,7 @@ import server from '../../env.dev'
 
 export default {
   name: "SelectSection",
+  props: ['tipo', 'funete'],
   data() {
     return {
       secciones: [],
@@ -50,7 +51,7 @@ export default {
   },
   methods: {
     showModal() {
-      this.$showModal(CreateSeccion, { fullscreen: true });
+      this.$showModal(CreateSeccion, { fullscreen: true, props: { tipo: this.tipo, fuente: this.fuente }, });
     },
     selected(item) {
       console.log(item);
