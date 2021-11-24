@@ -34,7 +34,7 @@
 <script>
 import NewBags from "../Bags/NewBags.vue";
 import axios from "axios/dist/axios";
-import CreateClient from "./ClientBag.vue"
+import CreateClient from "./CreateClientBag.vue"
 import server from '../../env.dev'
 
 export default {

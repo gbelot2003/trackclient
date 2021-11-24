@@ -58,8 +58,7 @@
             ></customers-item>
           </StackLayout>
 
-          <StackLayout row="2">
-          </StackLayout>
+          <StackLayout row="2"> </StackLayout>
 
           <StackLayout row="3">
             <Button
@@ -96,16 +95,15 @@
 <script>
 import Home from "../Home.vue";
 import TypeItem from "./items/TypeItem.vue";
-import SearchSender from "../Customers/SearchSenderBags.vue";
-import SearchReciber from "../Customers/SearchReciverBags.vue";
+import SearchClient from "../Customers/SearchClient.vue";
 import CustomersItem from "./items/CustomersItem.vue";
 import { BarcodeScanner } from "nativescript-barcodescanner";
 import axios from "axios/dist/axios";
 import Exit from "./modals/Exit.vue";
 const camera = require("@nativescript/camera");
 var geolocation = require("nativescript-geolocation");
-import { Accuracy } from "tns-core-modules/ui/enums"; 
-import server from "../../env.dev"
+import { Accuracy } from "tns-core-modules/ui/enums";
+import server from "../../env.dev";
 
 export default {
   name: "NewBags",
@@ -133,10 +131,10 @@ export default {
       return this.$store.getters.getCode;
     },
     getRemitente() {
-      return this.$store.getters.getRemitenteBag;
+      return this.$store.getters.getRemitente;
     },
     getDestinatario() {
-      return this.$store.getters.getDestinatarioBag;
+      return this.$store.getters.getDestinatario;
     },
     getTipo() {
       return this.$store.getters.getTipo;
@@ -194,7 +192,7 @@ export default {
       };
 
       console.log(data);
-      
+
       axios
         .post(server + "bolsas", data, {
           headers: {
@@ -212,7 +210,6 @@ export default {
             "No has llenado todos los campos o hay un error en la operación"
           );
         });
-        
     },
 
     onScanResult(evt) {
@@ -280,31 +277,29 @@ export default {
         });
     },
     remitente() {
-      this.$navigateTo(SearchSender, {
+      this.$navigateTo(SearchClient, {
         trasition: {
           name: "slide",
           duration: 200,
           curve: "ease",
+        },
+        props: {
+          tipo: "sender",
+          fuente: "bolsas",
         },
       });
     },
 
     destinatario() {
-      this.$navigateTo(SearchReciber, {
+      this.$navigateTo(SearchClient, {
         trasition: {
           name: "slide",
           duration: 200,
           curve: "ease",
         },
-      });
-    },
-
-    tipo() {
-      this.$navigateTo(SearchType, {
-        trasition: {
-          name: "slide",
-          duration: 200,
-          curve: "ease",
+        props: {
+          tipo: "reciver",
+          fuente: "bolsas",
         },
       });
     },

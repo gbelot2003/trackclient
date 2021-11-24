@@ -91,7 +91,7 @@ export default {
         .post(server + "clientes", data)
         .then((res) => {
           console.log(res.data);
-          (data = {}), this.$store.commit("SET_DESTINATARIO", res.data);
+          (data = {}), this.$store.commit("SET_REMITENTE", res.data);
 
           this.$navigateTo(NewPackage, {
             trasition: {

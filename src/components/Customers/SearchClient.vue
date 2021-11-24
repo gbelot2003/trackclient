@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <ActionBar title="Busqueda de Remitente">
+    <ActionBar :title="title">
       <NavigationButton android.systemIcon="ic_menu_back" @tap="goBack" />
     </ActionBar>
     <StackLayout>
@@ -24,7 +24,11 @@
           </ListView>
         </StackLayout>
         <StackLayout row="2">
-          <button class="btn primary" text="Nuevo Cliente" @tap="createClient"/>
+          <button
+            class="btn primary"
+            text="Nuevo Cliente"
+            @tap="createClient"
+          />
         </StackLayout>
       </GridLayout>
     </StackLayout>
@@ -33,44 +37,71 @@
 
 <script>
 import NewPackage from "../Packages/NewPackage.vue";
+import Newbags from "../Bags/NewBags.vue";
 import axios from "axios/dist/axios";
-import CreateClient from "./CreateClient.vue"
-import server from '../../env.dev'
+import CreateClient from "./CreateClient.vue";
+import server from "../../env.dev";
 
 export default {
   name: "SearchSender",
+  props: ["tipo", "fuente"],
   data() {
     return {
       clientes: [],
+      title: "",
     };
   },
   mounted() {
     this.getClientes();
   },
   methods: {
-    createClient(){
-       this.$navigateTo(CreateClient, {
-        trasition: {
-          name: "slide",
-          duration: 200,
-          curve: "ease",
-        }, 
-      });
-    },
-    selected(item) {
-      console.log(item);
-      this.$store.commit("SET_REMITENTE", item);
-      this.$navigateTo(NewPackage, {
+    createClient() {
+      this.$navigateTo(CreateClient, {
         trasition: {
           name: "slide",
           duration: 200,
           curve: "ease",
         },
+        props: {
+          tipo: this.tipo,
+          fuente: this.fuente
+        },
       });
     },
+    selected(item) {
+      if (this.tipo === "sender") {
+        this.$store.commit("SET_REMITENTE", item);
+      } else if (this.tipo === "reciver") {
+        this.$store.commit("SET_DESTINATARIO", item);
+      }
+
+      if (this.fuente === "paquetes") {
+        this.$navigateTo(NewPackage, {
+          trasition: {
+            name: "slide",
+            duration: 200,
+            curve: "ease",
+          },
+        });
+      } else {
+        this.$navigateTo(Newbags, {
+          trasition: {
+            name: "slide",
+            duration: 200,
+            curve: "ease",
+          },
+        });
+      }
+    },
     getClientes() {
+      if (this.tipo === "sender") {
+        this.title = "Busqueda de Remitente";
+      } else if (this.tipo === "reciver") {
+        this.title = "Busqueda de Destinatario";
+      }
+
       axios.get(server + "clientes").then((rest) => {
-        console.log(rest.data);
+        //console.log(rest.data);
         this.clientes = rest.data;
       });
     },
@@ -79,16 +110,25 @@ export default {
         console.log(rest.data);
         this.clientes = rest.data;
       });
-      
     },
     goBack() {
-      this.$navigateTo(NewPackage, {
-        trasition: {
-          name: "slide",
-          duration: 200,
-          curve: "ease",
-        },
-      });
+      if (this.fuente === "paquetes") {
+        this.$navigateTo(NewPackage, {
+          trasition: {
+            name: "slide",
+            duration: 200,
+            curve: "ease",
+          },
+        });
+      } else {
+        this.$navigateTo(Newbags, {
+          trasition: {
+            name: "slide",
+            duration: 200,
+            curve: "ease",
+          },
+        });
+      }
     },
   },
 };

@@ -98,8 +98,7 @@
 <script>
 import Home from "../Home.vue";
 import TypeItem from "./items/TypeItem.vue";
-import SearchReciber from "../Customers/SearchReciver.vue";
-import SearchSender from "../Customers/SearchSender.vue";
+import SearchClient from "../Customers/SearchClient.vue";
 import SearchType from "../Types/SearchType.vue";
 import CustomersItem from "./items/CustomersItem.vue";
 import { BarcodeScanner } from "nativescript-barcodescanner";
@@ -284,22 +283,30 @@ export default {
         });
     },
     remitente() {
-      this.$navigateTo(SearchSender, {
+      this.$navigateTo(SearchClient, {
         trasition: {
           name: "slide",
           duration: 200,
           curve: "ease",
         },
+        props: {
+          tipo: 'sender',
+          fuente: 'paquetes'
+        }
       });
     },
 
     destinatario() {
-      this.$navigateTo(SearchReciber, {
+      this.$navigateTo(SearchClient, {
         trasition: {
           name: "slide",
           duration: 200,
           curve: "ease",
         },
+        props:{
+          tipo: 'reciver',
+          fuente: 'paquetes'
+        }
       });
     },
 

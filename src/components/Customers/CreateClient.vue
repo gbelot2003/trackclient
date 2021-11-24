@@ -1,10 +1,7 @@
 <template>
   <Page>
     <ActionBar title="Crear Nuevo Cliente">
-      <NavigationButton
-        android.systemIcon="ic_menu_back"
-        @tap="goBack"
-      />
+      <NavigationButton android.systemIcon="ic_menu_back" @tap="goBack" />
     </ActionBar>
     <StackLayout>
       <GridLayout rows="auto, *, auto">
@@ -42,16 +39,17 @@
 
 <script>
 import NewPackage from "../Packages/NewPackage.vue";
+import NewBags from "../Bags/NewBags.vue";
 import SelectSettement from "../Settlement/SelectSettement.vue";
 import SelectSection from "../Sections/SelectSection.vue";
 import SettlementItems from "./items/SettlementItems.vue";
 import SectionItems from "./items/SectionItems.vue";
 import axios from "axios/dist/axios";
-import server from '../../env.dev'
+import server from "../../env.dev";
 
 export default {
   name: "CreateClient",
-  props: ["plantilla"],
+  props: ["plantilla", "tipo", "fuente"],
   components: {
     SettlementItems,
     SectionItems,
@@ -62,6 +60,9 @@ export default {
       identity: "",
       items: [],
     };
+  },
+  mounted() {
+    console.log(this.tipo);
   },
   methods: {
     selectSettlement() {
@@ -93,29 +94,54 @@ export default {
       axios
         .post(server + "clientes", data)
         .then((res) => {
-          console.log(res.data);
-          (data = {}), this.$store.commit("SET_REMITENTE", res.data);
+          data = {};
+          if (this.tipo === "sender") {
+            this.$store.commit("SET_REMITENTE", res.data);
+          } else if (this.tipo === "reciver") {
+            this.$store.commit("SET_DESTINATARIO", res.data);
+          }
 
-          this.$navigateTo(NewPackage, {
-            trasition: {
-              name: "slide",
-              duration: 200,
-              curve: "ease",
-            },
-          });
+          if (this.fuente === "paquetes") {
+            this.$navigateTo(NewPackage, {
+              trasition: {
+                name: "slide",
+                duration: 200,
+                curve: "ease",
+              },
+            });
+          } else {
+            this.$navigateTo(NewBags, {
+              trasition: {
+                name: "slide",
+                duration: 200,
+                curve: "ease",
+              },
+            });
+          }
         })
         .catch((err) => {
           console.log(err);
+          alert(err);
         });
     },
     goBack() {
-      this.$navigateTo(NewPackage, {
-        trasition: {
-          name: "slide",
-          duration: 200,
-          curve: "ease",
-        },
-      });
+      if (this.fuente === "paquetes") {
+        this.$navigateTo(NewPackage, {
+          trasition: {
+            name: "slide",
+            duration: 200,
+            curve: "ease",
+          },
+        });
+      } else {
+        this.$navigateTo(NewBags, {
+          trasition: {
+            name: "slide",
+            duration: 200,
+            curve: "ease",
+          },
+        });
+      }
     },
   },
   computed: {
