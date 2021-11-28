@@ -6,14 +6,10 @@
     <StackLayout>
       <GridLayout rows="auto, *, auto">
         <StackLayout row="0">
-          <TextField
-            class="form"
-            hint="Buscar Sección"
-            @textChange="onTextChange"
-          />
+          <TextField class="form" hint="Buscar Sección" @textChange="onTextChange" />
         </StackLayout>
         <StackLayout row="1">
-          <ListView height="500" class="" for="item in tipos.data">
+          <ListView height="500" class for="item in tipos">
             <v-template>
               <StackLayout @tap="selected(item)">
                 <label class="h6" :text="item.name" />
@@ -31,19 +27,25 @@
 
 <script>
 import NewPackage from "../Packages/NewPackage.vue";
-import CreateType from './CreateType.vue'
+import CreateType from "./CreateType.vue";
 import axios from "axios/dist/axios";
+import server from "../../env.dev";
 
 export default {
   name: "SearchType",
   data() {
     return {
       ifForm: false,
-      tipos: [],
+      tipos: []
     };
   },
   mounted() {
-    this.getTipos();
+    this.setTipos();
+  },
+  computed: {
+    getTipos() {
+      return this.$store.getters.getTipos;
+    }
   },
   methods: {
     showModal() {
@@ -56,33 +58,52 @@ export default {
         trasition: {
           name: "slide",
           duration: 200,
-          curve: "ease",
-        },
+          curve: "ease"
+        }
       });
     },
-    getTipos() {
-      axios.get("http://192.168.5.108/api/tipos").then((rest) => {
-        console.log(rest.data);
-        this.tipos = rest.data;
+    setTipos() {
+      this.$store.dispatch("FETCH_TYPES").then(() => {
+        this.tipos = this.getTipos
       });
     },
     onTextChange(arg) {
-      axios
-        .get("http://192.168.5.108/api/tipos?string=" + arg.value)
-        .then((rest) => {
-          console.log(rest.data);
-          this.tipos = rest.data;
-        });
+      this.$store.dispatch("FETCH_STYPES", arg.value).then(() => {
+        this.tipos = this.getTipos
+      });
+      // axios
+      //   .get(server + "tipos?string=" + arg.value, {
+      //     headers: {
+      //       Authorization: this.access
+      //     }
+      //   })
+      //   .then(rest => {
+      //     console.log(rest.data);
+      //     this.tipos = rest.data;
+      //   })
+      //   .catch(error => {
+      //     if (error.response) {
+      //       console.log(error.response.data);
+      //       console.log(error.response.status);
+      //       console.log(error.response.headers);
+      //     } else if (error.request) {
+      //       // The request was made but no response was received
+      //       console.log(error.request);
+      //     } else {
+      //       // Something happened in setting up the request that triggered an Error
+      //       console.log("Error", error.message);
+      //     }
+      //   });
     },
     goBack() {
       this.$navigateTo(NewPackage, {
         trasition: {
           name: "slide",
           duration: 200,
-          curve: "ease",
-        },
+          curve: "ease"
+        }
       });
-    },
-  },
+    }
+  }
 };
 </script>

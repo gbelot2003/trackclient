@@ -51,6 +51,10 @@ export default {
         return state.destinatarioBag
     },
 
+    getTipos(state) {
+        return state.tipos
+    },
+
     getTipo(state) {
         return state.tipo
     },

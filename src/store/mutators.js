@@ -89,6 +89,10 @@ export default {
         state.destinatarioBag = {}
     },
 
+    SET_TIPOS(state, payload) {
+        state.tipos = payload
+    },
+
     SET_TIPO(state, payload) {
         state.tipo = payload;
     },

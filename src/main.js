@@ -1,6 +1,6 @@
 import Vue from 'nativescript-vue'
 import App from './components/App'
-import Home from './components/transits/TransactionBag.vue'
+import Home from './components/Types/SearchType'
 //import Home from './components/Home'
 import store from './store'
 
@@ -12,6 +12,6 @@ Vue.registerElement("DropDown", () => require("nativescript-drop-down/drop-down"
 
 
 new Vue({
-  render: h => h('frame', [h(Home)]),
+  render: h => h('frame', [h(App)]),
   store, 
 }).$start()

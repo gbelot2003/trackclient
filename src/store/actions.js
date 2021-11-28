@@ -118,5 +118,37 @@ export default {
                 console.log(err);
             });
         });
-    }
+    },
+
+    async ['FETCH_TYPES']({ commit, getters }) {
+        try {
+            let string = `${server}tipos`;
+            const { data } = await axios.get(string, {
+                headers: {
+                    Authorization: getters.getAccessToken
+                }
+            });
+            console.log(data)
+            commit('SET_TIPOS', data.data);
+        } catch (error) {
+            console.log(error)
+            throw error;
+        }
+    },
+
+    // Busqueda
+    async ['FETCH_STYPES']({ commit, getters }, params) {
+        try {
+            let string = `${server}tipos?string=${params}`;
+            const { data } = await axios.get(string, {
+                headers: {
+                    Authorization: getters.getAccessToken
+                }
+            });
+            commit('SET_TIPOS', data.data);
+        } catch (error) {
+            console.log(error)
+            throw error;
+        }
+    },
 }
