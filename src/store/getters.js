@@ -63,6 +63,10 @@ export default {
         return state.tipo
     },
 
+    getAgencias(state) {
+        return state.agencias
+    },
+
     getAgencia(state) {
         return state.agencia
     },

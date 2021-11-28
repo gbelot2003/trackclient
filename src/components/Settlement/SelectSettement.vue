@@ -16,7 +16,7 @@
           />
         </StackLayout>
         <StackLayout row="1">
-          <ListView height="500" class="" for="item in agencias.data">
+          <ListView height="500" for="item in agencias">
             <v-template>
               <StackLayout @tap="selected(item)">
                 <label class="h6" :text="item.name" />
@@ -35,9 +35,10 @@
 
 <script>
 import axios from "axios/dist/axios";
-import CreateClient from "../Customers/CreateClient.vue";
 import CreateSettlement from "./CreateSettlement.vue";
 import server from "../../env.dev";
+
+
 
 export default {
   name: "SelectSettement",
@@ -49,6 +50,11 @@ export default {
   props: ["tipo", "fuente"],
   mounted() {
     this.getAgencias();
+  },
+  computed: {
+    fetchAgencias(){
+      return this.$store.getters.getAgencias
+    }
   },
   methods: {
     showModal() {
@@ -73,16 +79,14 @@ export default {
       });
     },
     getAgencias() {
-      axios.get(server + "agencias").then((rest) => {
-        console.log(rest.data);
-        this.agencias = rest.data;
-      });
+      this.$store.dispatch('FETCH_AGENCIAS').then(() => {
+        this.agencias = this.fetchAgencias
+      })
     },
     onTextChange(arg) {
-      axios.get(server + "agencias?string=" + arg.value).then((rest) => {
-        console.log(rest.data);
-        this.agencias = rest.data;
-      });
+      this.$store.dispatch('FETCH_SAGENCIAS', arg.value).then(() => {
+        this.agencias = this.fetchAgencias
+      })
     },
   },
 };

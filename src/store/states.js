@@ -19,6 +19,7 @@ export default {
     tipos: [],
     tipo: {},
     image: '',
+    agencias: [],
     agencia: {},
     seccion: {},
     transito: '',

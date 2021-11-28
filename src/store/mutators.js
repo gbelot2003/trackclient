@@ -105,6 +105,10 @@ export default {
         state.tipo = {}
     },
 
+    SET_AGENCIAS(state, payload) {
+        state.agencias = payload
+    },
+
     SET_AGENCIA(state, payload) {
         state.agencia = payload;
     },
