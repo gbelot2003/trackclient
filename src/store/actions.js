@@ -103,6 +103,40 @@ export default {
         });
     },
 
+    // Clientes index
+    async ['FETCH_CLIENTES']({ commit, getters }) {
+        try {
+            let string = `${server}clientes`;
+            const { data } = await axios.get(string, {
+                headers: {
+                    Authorization: getters.getAccessToken
+                }
+            });
+            console.log(data.data)
+            commit('SET_CLIENTES', data.data);
+        } catch (error) {
+            console.log(error)
+            throw error;
+        }
+    },
+
+    // Clientes Busqueda
+    async ['FETCH_SCLIENTES']({ commit, getters }, params) {
+        try {
+            let string = `${server}clientes?string=${params}`;
+            const { data } = await axios.get(string, {
+                headers: {
+                    Authorization: getters.getAccessToken
+                }
+            });
+            commit('SET_CLIENTES', data.data);
+        } catch (error) {
+            console.log(error.response)
+            throw error;
+        }
+    },
+
+    // Crear Cliente
     CREATE_CLIENTS: ({ commit, getters }, params) => {
         return new Promise((resolve, reject) => {
             let string = `${server}clientes`;
@@ -120,6 +154,9 @@ export default {
         });
     },
 
+
+
+    // Tipos index
     async ['FETCH_TYPES']({ commit, getters }) {
         try {
             let string = `${server}tipos`;
@@ -136,7 +173,7 @@ export default {
         }
     },
 
-    // Busqueda
+    // Tipos Busqueda
     async ['FETCH_STYPES']({ commit, getters }, params) {
         try {
             let string = `${server}tipos?string=${params}`;

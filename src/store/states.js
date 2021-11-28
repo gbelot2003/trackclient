@@ -11,6 +11,7 @@ export default {
     code: 0,
     package: {},
     bag: {},
+    clientes: {},
     remitente:{},
     destinatario:{},
     remitenteBag:{},

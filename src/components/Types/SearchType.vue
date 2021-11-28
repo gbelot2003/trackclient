@@ -28,8 +28,6 @@
 <script>
 import NewPackage from "../Packages/NewPackage.vue";
 import CreateType from "./CreateType.vue";
-import axios from "axios/dist/axios";
-import server from "../../env.dev";
 
 export default {
   name: "SearchType",
@@ -71,29 +69,7 @@ export default {
       this.$store.dispatch("FETCH_STYPES", arg.value).then(() => {
         this.tipos = this.getTipos
       });
-      // axios
-      //   .get(server + "tipos?string=" + arg.value, {
-      //     headers: {
-      //       Authorization: this.access
-      //     }
-      //   })
-      //   .then(rest => {
-      //     console.log(rest.data);
-      //     this.tipos = rest.data;
-      //   })
-      //   .catch(error => {
-      //     if (error.response) {
-      //       console.log(error.response.data);
-      //       console.log(error.response.status);
-      //       console.log(error.response.headers);
-      //     } else if (error.request) {
-      //       // The request was made but no response was received
-      //       console.log(error.request);
-      //     } else {
-      //       // Something happened in setting up the request that triggered an Error
-      //       console.log("Error", error.message);
-      //     }
-      //   });
+
     },
     goBack() {
       this.$navigateTo(NewPackage, {

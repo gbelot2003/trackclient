@@ -45,16 +45,20 @@ export default {
         state.package = payload;
     },
 
-    UNSET_PACKAGE(state){
+    UNSET_PACKAGE(state) {
         state.package = {}
     },
 
-    SET_BAG(state, payload){
+    SET_BAG(state, payload) {
         state.bag = payload
     },
 
     UNSET_BAG(state) {
         state.bag = {}
+    },
+
+    SET_CLIENTES(state, payload) {
+        state.clientes = payload
     },
 
     SET_REMITENTE(state, payload) {

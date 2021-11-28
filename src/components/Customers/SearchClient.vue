@@ -6,14 +6,10 @@
     <StackLayout>
       <GridLayout rows="auto, *, auto">
         <StackLayout row="0">
-          <TextField
-            class="input-field input"
-            hint="Buscar de Cliente"
-            @textChange="onTextChange"
-          />
+          <TextField class="input-field input" hint="Buscar de Cliente" @textChange="onTextChange" />
         </StackLayout>
         <StackLayout row="1">
-          <ListView height="500" class="" for="item in clientes.data">
+          <ListView height="500" class for="item in clientes">
             <v-template>
               <StackLayout class="cliente" @tap="selected(item)">
                 <label class="h6" :text="item.name" />
@@ -24,11 +20,7 @@
           </ListView>
         </StackLayout>
         <StackLayout row="2">
-          <button
-            class="btn primary"
-            text="Nuevo Cliente"
-            @tap="createClient"
-          />
+          <button class="btn primary" text="Nuevo Cliente" @tap="createClient" />
         </StackLayout>
       </GridLayout>
     </StackLayout>
@@ -48,11 +40,16 @@ export default {
   data() {
     return {
       clientes: [],
-      title: "",
+      title: ""
     };
   },
   mounted() {
     this.getClientes();
+  },
+  computed: {
+    fetchClientes() {
+      return this.$store.getters.getClientes;
+    }
   },
   methods: {
     createClient() {
@@ -60,16 +57,15 @@ export default {
         trasition: {
           name: "slide",
           duration: 200,
-          curve: "ease",
+          curve: "ease"
         },
         props: {
           tipo: this.tipo,
           fuente: this.fuente
-        },
+        }
       });
     },
     selected(item) {
-      console.log(item)
       if (this.tipo === "sender") {
         this.$store.commit("SET_REMITENTE", item);
       } else if (this.tipo === "reciver") {
@@ -81,16 +77,16 @@ export default {
           trasition: {
             name: "slide",
             duration: 200,
-            curve: "ease",
-          },
+            curve: "ease"
+          }
         });
       } else {
         this.$navigateTo(Newbags, {
           trasition: {
             name: "slide",
             duration: 200,
-            curve: "ease",
-          },
+            curve: "ease"
+          }
         });
       }
     },
@@ -101,36 +97,41 @@ export default {
         this.title = "Busqueda de Destinatario";
       }
 
-      axios.get(server + "clientes").then((rest) => {
-        console.log(rest.data);
-        this.clientes = rest.data;
+      this.$store.dispatch("FETCH_CLIENTES").then(() => {
+        this.clientes = this.fetchClientes;
       });
     },
     onTextChange(arg) {
-      axios.get(server + "clientes?string=" + arg.value).then((rest) => {
-        console.log(rest.data);
-        this.clientes = rest.data;
+      console.log(arg.value)
+      this.$store.dispatch("FETCH_SCLIENTES", arg.value).then(() => {
+        this.clientes = this.fetchClientes;
       });
+
+      // axios.get(server + "clientes?string=" + arg.value).then((rest) => {
+      //   console.log(rest.data);
+      //   this.clientes = rest.data;
+      // });
     },
+
     goBack() {
       if (this.fuente === "paquetes") {
         this.$navigateTo(NewPackage, {
           trasition: {
             name: "slide",
             duration: 200,
-            curve: "ease",
-          },
+            curve: "ease"
+          }
         });
       } else {
         this.$navigateTo(Newbags, {
           trasition: {
             name: "slide",
             duration: 200,
-            curve: "ease",
-          },
+            curve: "ease"
+          }
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>

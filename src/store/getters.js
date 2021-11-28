@@ -35,6 +35,10 @@ export default {
         return state.bag
     },
 
+    getClientes(state) {
+        return state.clientes
+    },
+
     getRemitente(state) {
         return state.remitente
     },
