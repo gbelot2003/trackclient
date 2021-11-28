@@ -21,6 +21,7 @@ export default {
     image: '',
     agencias: [],
     agencia: {},
+    secciones: [],
     seccion: {},
     transito: '',
 

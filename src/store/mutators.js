@@ -117,6 +117,10 @@ export default {
         state.agencia = {}
     },
 
+    SET_SECCIONES(state, payload) {
+        state.secciones = payload
+    },
+
     SET_SECCION(state, payload) {
         state.seccion = payload
     },

@@ -171,22 +171,22 @@ export default {
         }
     },
 
-        // agencias search
-        async ['FETCH_SAGENCIAS']({ commit, getters }, params ) {
-            try {
-                let string = `${server}agencias?string=${params}`;
-                const { data } = await axios.get(string, {
-                    headers: {
-                        Authorization: getters.getAccessToken
-                    }
-                });
-                console.log(data)
-                commit('SET_AGENCIAS', data.data);
-            } catch (error) {
-                console.log(error)
-                throw error;
-            }
-        },
+    // agencias search
+    async ['FETCH_SAGENCIAS']({ commit, getters }, params) {
+        try {
+            let string = `${server}agencias?string=${params}`;
+            const { data } = await axios.get(string, {
+                headers: {
+                    Authorization: getters.getAccessToken
+                }
+            });
+            console.log(data)
+            commit('SET_AGENCIAS', data.data);
+        } catch (error) {
+            console.log(error)
+            throw error;
+        }
+    },
 
     // Tipos index
     async ['FETCH_TYPES']({ commit, getters }) {
@@ -215,6 +215,39 @@ export default {
                 }
             });
             commit('SET_TIPOS', data.data);
+        } catch (error) {
+            console.log(error)
+            throw error;
+        }
+    },
+
+    // Secciones index
+    async ['FETCH_SECCIONES']({ commit, getters }) {
+        try {
+            let string = `${server}secciones`;
+            const { data } = await axios.get(string, {
+                headers: {
+                    Authorization: getters.getAccessToken
+                }
+            });
+            console.log(data)
+            commit('SET_SECCIONES', data.data);
+        } catch (error) {
+            console.log(error)
+            throw error;
+        }
+    },
+
+    // Secciones Busqueda
+    async ['SEARCH_SECCIONES']({ commit, getters }, params) {
+        try {
+            let string = `${server}secciones?string=${params}`;
+            const { data } = await axios.get(string, {
+                headers: {
+                    Authorization: getters.getAccessToken
+                }
+            });
+            commit('SET_SECCIONES', data.data);
         } catch (error) {
             console.log(error)
             throw error;

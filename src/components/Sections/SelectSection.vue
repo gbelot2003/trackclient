@@ -1,22 +1,15 @@
 <template>
   <Page>
     <ActionBar title="Seleccione Sección Admin">
-      <NavigationButton
-        android.systemIcon="ic_menu_back"
-        @tap="$navigateBack"
-      />
+      <NavigationButton android.systemIcon="ic_menu_back" @tap="$navigateBack" />
     </ActionBar>
     <StackLayout>
       <GridLayout rows="auto, *, auto">
         <StackLayout row="0">
-          <TextField
-            class="form"
-            hint="Buscar Sección"
-            @textChange="onTextChange"
-          />
+          <TextField class="form" hint="Buscar Sección" @textChange="onTextChange" />
         </StackLayout>
         <StackLayout row="1">
-          <ListView height="500" class="" for="item in secciones.data">
+          <ListView height="500" class for="item in secciones">
             <v-template>
               <StackLayout @tap="selected(item)">
                 <label class="h6" :text="item.name" />
@@ -25,7 +18,7 @@
           </ListView>
         </StackLayout>
         <StackLayout row="2">
-          <button class="btn primary" text="Nueva Sección"  @tap="showModal"/>
+          <button class="btn primary" text="Nueva Sección" @tap="showModal" />
         </StackLayout>
       </GridLayout>
     </StackLayout>
@@ -33,25 +26,30 @@
 </template>
 
 <script>
-import axios from "axios/dist/axios";
-import CreateClient from "../Customers/CreateClient.vue";
 import CreateSeccion from "./CreateSection.vue";
-import server from '../../env.dev'
 
 export default {
   name: "SelectSection",
-  props: ['tipo', 'funete'],
+  props: ["tipo", "funete"],
   data() {
     return {
-      secciones: [],
+      secciones: []
     };
   },
   mounted() {
     this.fecthSections();
   },
+  computed: {
+    getSecciones() {
+      return this.$store.getters.getSecciones;
+    }
+  },
   methods: {
     showModal() {
-      this.$showModal(CreateSeccion, { fullscreen: true, props: { tipo: this.tipo, fuente: this.fuente }, });
+      this.$showModal(CreateSeccion, {
+        fullscreen: true,
+        props: { tipo: this.tipo, fuente: this.fuente }
+      });
     },
     selected(item) {
       console.log(item);
@@ -60,24 +58,20 @@ export default {
         trasition: {
           name: "slide",
           duration: 200,
-          curve: "ease",
-        },
+          curve: "ease"
+        }
       });
     },
     fecthSections() {
-      axios.get(server + "secciones").then((rest) => {
-        console.log(rest.data);
-        this.secciones = rest.data;
+      this.$store.dispatch("FETCH_SECCIONES").then(() => {
+        this.secciones = this.getSecciones;
       });
     },
     onTextChange(arg) {
-      axios
-        .get(server + "secciones?string=" + arg.value)
-        .then((rest) => {
-          console.log(rest.data);
-          this.secciones = rest.data;
-        });
-    },
-  },
+      this.$store.dispatch("SEARCH_SECCIONES", arg.value).then(() => {
+        this.secciones = this.getSecciones;
+      });
+    }
+  }
 };
 </script>

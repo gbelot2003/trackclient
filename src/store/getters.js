@@ -70,6 +70,10 @@ export default {
     getAgencia(state) {
         return state.agencia
     },
+    
+    getSecciones(state) {
+        return state.secciones
+    },
 
     getSeccion(state) {
         return state.seccion

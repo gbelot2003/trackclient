@@ -10,7 +10,6 @@ Vue.registerElement('DrawingPad', () => require('@nativescript-community/drawing
 Vue.registerElement('BarcodeScanner', () => require('nativescript-barcodescanner').BarcodeScannerView)
 Vue.registerElement("DropDown", () => require("nativescript-drop-down/drop-down").DropDown);
 
-
 new Vue({
   render: h => h('frame', [h(App)]),
   store, 
