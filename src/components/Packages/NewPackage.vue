@@ -25,6 +25,17 @@
         />
         <Button class="auto" text="auto" width="40" @tap="autocode" />
       </StackLayout>
+      
+      <!-- <StackLayout >
+        <ScrollView  height="150">
+          <ListView  for="item in tester">
+            <v-template>
+              <Label class="codigo" :text="item.code" />
+            </v-template>
+          </ListView>
+        </ScrollView>
+      </StackLayout> -->
+      
       <ScrollView height="600">
         <GridLayout rows="auto, auto, auto, auto, auto, *">
           <StackLayout row="0">
@@ -92,7 +103,15 @@ export default {
       detalles: "",
       image: "",
       latitude: "",
-      longitude: ""
+      longitude: "",
+      tester: [
+        {id:1, code: 123},
+        {id:2, code: 456},
+        {id:3, code: 789},
+        {id:4, code: 987},
+        {id:5, code: 654},
+        {id:6, code: 321},
+      ]
     };
   },
   components: {
@@ -338,5 +357,9 @@ export default {
 
 .descripcion {
   text-align: center;
+}
+
+.codigos {
+  background-color: rgb(128, 164, 179);
 }
 </style>
