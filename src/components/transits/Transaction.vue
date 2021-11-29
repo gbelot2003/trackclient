@@ -84,6 +84,7 @@ export default {
     };
   },
   mounted() {
+    this.$store.commit("UNSET_PACKAGE");
     geolocation.enableLocationRequest().then(() => {
       this.getGeolocation();
     });
@@ -132,8 +133,13 @@ export default {
           this.$store
             .dispatch("SEARCH_CODE", res.text)
             .then(resp => {
-              this.regulares = true;
-              this.finales = true;
+              if (Object.keys(resp).length === 0) {
+                console.log("empty -----------------");
+                alert("No se encontro el código en la base de datos");
+              } else {
+                this.regulares = true;
+                this.finales = true;
+              }
             })
             .catch(err => {
               console.log(err.response);
@@ -189,10 +195,20 @@ export default {
         })
         .then(result => {
           // Cambiar accion por la necesaria
-          console.log(result.text);
-          this.$store.dispatch("SEARCH_CODE", result.text);
-          this.regulares = true;
-          this.finales = true;
+
+          this.$store
+            .dispatch("SEARCH_CODE", result.text)
+            .then(resp => {
+              if (Object.keys(resp).length === 0) {
+                alert("No se encontro el código en la base de datos");
+              } else {
+                this.regulares = true;
+                this.finales = true;
+              }
+            })
+            .catch(err => {
+              console.log(err.response);
+            });
         })
         .catch(err => {
           alert("No Code in database");
