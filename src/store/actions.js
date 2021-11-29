@@ -50,7 +50,6 @@ export default {
     SEARCH_CODE: ({ commit, getters }, params) => {
         return new Promise((resolve, reject) => {
             let string = `${server}package-code/${params}`;
-
             axios.get(string, {
                 headers: {
                     Authorization: getters.getAccessToken
