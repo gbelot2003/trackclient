@@ -15,12 +15,7 @@
           @scanResult="onScanResult"
           v-if="isIOS"
         />
-        <Button
-          class="scan"
-          text="Código"
-          width="140"
-          @tap="doScanWithBackCameraWithFlip"
-        />
+        <Button class="scan" text="Código" width="140" @tap="doScanWithBackCameraWithFlip" />
         <label
           class="code"
           :text="getCode"
@@ -33,24 +28,12 @@
       <ScrollView height="600">
         <GridLayout rows="auto, auto, auto, auto, auto, *">
           <StackLayout row="0">
-            <Button
-              text="Remitente"
-              @tap="remitente"
-              v-if="!getRemitente.name"
-            />
-            <customers-item
-              :item="getRemitente"
-              title="Remitente"
-              v-if="getRemitente.name"
-            ></customers-item>
+            <Button text="Remitente" @tap="remitente" v-if="!getRemitente.name" />
+            <customers-item :item="getRemitente" title="Remitente" v-if="getRemitente.name"></customers-item>
           </StackLayout>
 
           <StackLayout row="1">
-            <Button
-              text="Destinatario"
-              @tap="destinatario"
-              v-if="!getDestinatario.name"
-            />
+            <Button text="Destinatario" @tap="destinatario" v-if="!getDestinatario.name" />
             <customers-item
               :item="getDestinatario"
               title="Destinatario"
@@ -58,33 +41,24 @@
             ></customers-item>
           </StackLayout>
 
-          <StackLayout row="2"> </StackLayout>
+          <StackLayout row="2"></StackLayout>
 
           <StackLayout row="3">
             <Button
               text="Descripción o Detalle"
               @tap="showDescription = showDescription ? false : true"
             />
-            <label
-              text="Descripción o Detalles"
-              class="descripcion"
-              v-if="showDescription"
-            />
+            <label text="Descripción o Detalles" class="descripcion" v-if="showDescription" />
             <TextView v-model="detalles" v-if="showDescription" />
           </StackLayout>
 
           <!-- <StackLayout row="4">
             <Button text="Tomar Fotografia" @tap="takePicture" />
             <Image :src="getImage" widuth="75" height="75" />
-          </StackLayout> -->
+          </StackLayout>-->
 
           <StackLayout row="5">
-            <Button
-              text="Crear Envio"
-              class="btn-primary"
-              @tap="SubmitPackage"
-              v-if="getCode"
-            />
+            <Button text="Crear Envio" class="btn-primary" @tap="SubmitPackage" v-if="getCode" />
           </StackLayout>
         </GridLayout>
       </ScrollView>
@@ -114,12 +88,12 @@ export default {
       detalles: "",
       image: "",
       latitude: "",
-      longitude: "",
+      longitude: ""
     };
   },
   components: {
     CustomersItem,
-    TypeItem,
+    TypeItem
   },
   mounted() {
     geolocation.enableLocationRequest().then(() => {
@@ -145,6 +119,9 @@ export default {
     getCoordenates() {
       return this.$store.getters.getCoordenates;
     },
+    getCredentials() {
+      return this.$store.getters.getAccessToken;
+    }
   },
   methods: {
     getGeolocation() {
@@ -153,9 +130,9 @@ export default {
           .getCurrentLocation({
             desiredAccuracy: Accuracy.high,
             maximumAge: 5000,
-            timeout: 20000,
+            timeout: 20000
           })
-          .then((res) => {
+          .then(res => {
             let that = this;
             this.latitude = res.latitude;
             this.longitude = res.longitude;
@@ -163,7 +140,7 @@ export default {
       }, 2000);
     },
     exitModal() {
-      this.$showModal(Exit).then((res) => {
+      this.$showModal(Exit).then(res => {
         if (res === "continuar") {
           this.clear();
         } else {
@@ -185,26 +162,24 @@ export default {
         state_id: 3,
         latitude: this.latitude,
         longitude: this.longitude,
-        settlement_sender_id: this.getRemitente.id,
-        settlement_reciver_id: this.getDestinatario.id,
-        description: this.detalles,
-        image: this.getImage,
+        sender_id: this.getRemitente.id,
+        reciver_id: this.getDestinatario.id,
+        description: this.detalles
       };
-
-      console.log(data);
 
       axios
         .post(server + "bolsas", data, {
           headers: {
             Accept: "application/json",
-          },
+            Authorization: this.getCredentials
+          }
         })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           this.exitModal();
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(err => {
+          console.log(err.response);
           //this.exitModal();
           alert(
             "No has llenado todos los campos o hay un error en la operación"
@@ -233,15 +208,15 @@ export default {
           openSettingsIfPermissionWasPreviouslyDenied: true, // On iOS you can send the user to the settings app if access was previously denied
           closeCallback: () => {
             console.log("Scanner closed @ " + new Date().getTime());
-          },
+          }
         })
-        .then((result) => {
+        .then(result => {
           let that = this;
           // Cambiar accion por la necesaria
           console.log(result.text);
           that.$store.commit("SET_CODE", result.text);
         })
-        .catch((err) => {
+        .catch(err => {
           alert("No Code in database");
           console.log("No scan. " + err);
         });
@@ -262,17 +237,17 @@ export default {
               width: 600,
               height: 600,
               keepAspectRatio: true,
-              saveToGallery: true,
+              saveToGallery: true
             })
-            .then((imageAsset) => {
+            .then(imageAsset => {
               this.image = imageAsset;
               this.$store.commit("SET_IMAGE", imageAsset);
             })
-            .catch((e) => {
+            .catch(e => {
               console.log("error:", e);
             });
         })
-        .catch((e) => {
+        .catch(e => {
           console.log("Error requesting permission");
         });
     },
@@ -281,12 +256,12 @@ export default {
         trasition: {
           name: "slide",
           duration: 200,
-          curve: "ease",
+          curve: "ease"
         },
         props: {
           tipo: "sender",
-          fuente: "bolsas",
-        },
+          fuente: "bolsas"
+        }
       });
     },
 
@@ -295,12 +270,12 @@ export default {
         trasition: {
           name: "slide",
           duration: 200,
-          curve: "ease",
+          curve: "ease"
         },
         props: {
           tipo: "reciver",
-          fuente: "bolsas",
-        },
+          fuente: "bolsas"
+        }
       });
     },
 
@@ -309,11 +284,11 @@ export default {
         trasition: {
           name: "slide",
           duration: 200,
-          curve: "ease",
-        },
+          curve: "ease"
+        }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
