@@ -15,15 +15,10 @@
           @scanResult="onScanResult"
           v-if="isIOS"
         />
-        <Button
-          class="scan"
-          text="Scan Código"
-          width="140"
-          @tap="doScanWithBackCameraWithFlip"
-        />
+        <Button class="scan" text="Scan Código" width="140" @tap="doScanWithBackCameraWithFlip" />
         <label
           class="code"
-          text=""
+          text
           width="200"
           verticalAlignment="center"
           horizontalAlignment="center"
@@ -31,13 +26,7 @@
         <Button class="auto" text="manu" width="50" @tap="manualCode" />
       </StackLayout>
       <GridLayout rows="auto, auto" columns="*,*">
-        <customers-item
-          row="0"
-          column="0"
-          :item="getSender"
-          title="Emisor"
-          v-if="getBag.code"
-        />
+        <customers-item row="0" column="0" :item="getSender" title="Emisor" v-if="getBag.code" />
         <customers-item
           row="0"
           column="1"
@@ -51,25 +40,11 @@
         <Button text="Transitos Finales" @tap="bfinales" v-if="finales" />
       </StackLayout>
       <StackLayout>
-        <transito-item
-          :item="getTransito"
-          v-if="getTransito"
-          v-on:choice="showChoices"
-        />
+        <transito-item :item="getTransito" v-if="getTransito" v-on:choice="showChoices" />
       </StackLayout>
       <StackLayout>
-        <TextView
-          v-if="getTransito"
-          class="form"
-          hint="Detalles"
-          v-model="details"
-        />
-        <Button
-          v-if="getTransito"
-          text="Registras"
-          class="btn-primary"
-          @tap="SubmitPackage"
-        />
+        <TextView v-if="getTransito" class="form" hint="Detalles" v-model="details" />
+        <Button v-if="getTransito" text="Registras" class="btn-primary" @tap="SubmitPackage" />
         <Button v-if="getTransito" text="Cancelar" @tap="clear" />
       </StackLayout>
     </StackLayout>
@@ -98,7 +73,7 @@ export default {
       regulares: false,
       finales: false,
       latitude: "",
-      longitude: "",
+      longitude: ""
     };
   },
   mounted() {
@@ -108,7 +83,7 @@ export default {
   },
   components: {
     CustomersItem,
-    TransitoItem,
+    TransitoItem
   },
   computed: {
     getBag() {
@@ -126,6 +101,9 @@ export default {
     getTransito() {
       return this.$store.getters.getTransito;
     },
+    getCredentials() {
+      return this.$store.getters.getAccessToken;
+    }
   },
 
   methods: {
@@ -135,7 +113,7 @@ export default {
         longitude: this.longitude,
         latitude: this.latitude,
         state_id: this.getTransito.id,
-        details: this.details,
+        details: this.details
       };
 
       console.log(data);
@@ -144,13 +122,14 @@ export default {
         .post(server + "transitos-bolsas", data, {
           headers: {
             Accept: "application/json",
-          },
+            Authorization: this.getCredentials
+          }
         })
-        .then((res) => {
+        .then(res => {
           console.log(res.data);
           this.exitModal();
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
           //this.exitModal();
           alert(
@@ -159,7 +138,7 @@ export default {
         });
     },
     bregulares() {
-      this.$showModal(RegularVue, { fullscreen: true }).then((res) => {
+      this.$showModal(RegularVue, { fullscreen: true }).then(res => {
         if (res !== "close") {
           this.regulares = false;
           this.finales = false;
@@ -167,7 +146,7 @@ export default {
       });
     },
     bfinales() {
-      this.$showModal(FinalesVue, { fullscreen: true }).then((res) => {
+      this.$showModal(FinalesVue, { fullscreen: true }).then(res => {
         if (res !== "close") {
           this.regulares = false;
           this.finales = false;
@@ -180,15 +159,15 @@ export default {
         message: "Agrega el Numero de código manual",
         okButtonText: "Enviar",
         cancelButtonText: "Cancelar",
-        inputType: dialogs.inputType.number,
+        inputType: dialogs.inputType.number
       })
-        .then((res) => {
-          this.$store.dispatch("SEARCH_BAG_CODE", 956025205).then((resp) => {
+        .then(res => {
+          this.$store.dispatch("SEARCH_BAG_CODE", res.text).then(resp => {
             this.regulares = true;
             this.finales = true;
           });
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
     },
@@ -218,16 +197,16 @@ export default {
           openSettingsIfPermissionWasPreviouslyDenied: true, // On iOS you can send the user to the settings app if access was previously denied
           closeCallback: () => {
             console.log("Scanner closed @ " + new Date().getTime());
-          },
+          }
         })
-        .then((result) => {
+        .then(result => {
           // Cambiar accion por la necesaria
           console.log(result.text);
           this.$store.dispatch("SEARCH_BAG_CODE", result.text);
           this.regulares = true;
           this.finales = true;
         })
-        .catch((err) => {
+        .catch(err => {
           alert("No Code in database");
           console.log("No scan. " + err);
         });
@@ -238,9 +217,9 @@ export default {
           .getCurrentLocation({
             desiredAccuracy: Accuracy.high,
             maximumAge: 5000,
-            timeout: 20000,
+            timeout: 20000
           })
-          .then((res) => {
+          .then(res => {
             let that = this;
             this.latitude = res.latitude;
             this.longitude = res.longitude;
@@ -248,7 +227,7 @@ export default {
       }, 2000);
     },
     exitModal() {
-      this.$showModal(Exit).then((res) => {
+      this.$showModal(Exit).then(res => {
         if (res === "continuar") {
           this.clear();
         } else {
@@ -270,11 +249,11 @@ export default {
         trasition: {
           name: "slide",
           duration: 200,
-          curve: "ease",
-        },
+          curve: "ease"
+        }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
