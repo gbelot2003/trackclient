@@ -253,4 +253,25 @@ export default {
             throw error;
         }
     },
+
+    // Envio de paquete
+    CREATE_PACKAGE: ({ commit, getters }, params) => {
+        return new Promise((resolve, reject) => {
+            let string = `${server}packages`;
+            //console.log(params)
+            axios.post(string, { params }, {
+                headers: {
+                    Authorization: getters.getAccessToken
+                }
+            }).then(res => {
+                console.log(resp);
+                resolve(res.data)
+            }).catch(err => {
+                reject(err)
+                console.log(err.response.status);
+                console.log(err.response.statusText);
+                console.log(err.response);
+            });
+        });
+    },
 }
