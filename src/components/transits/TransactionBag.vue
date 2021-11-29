@@ -163,8 +163,12 @@ export default {
       })
         .then(res => {
           this.$store.dispatch("SEARCH_BAG_CODE", res.text).then(resp => {
-            this.regulares = true;
-            this.finales = true;
+            if (Object.keys(resp).length === 0) {
+              alert("No se encontro el código en la base de datos");
+            } else {
+              this.regulares = true;
+              this.finales = true;
+            }
           });
         })
         .catch(e => {
@@ -201,10 +205,14 @@ export default {
         })
         .then(result => {
           // Cambiar accion por la necesaria
-          console.log(result.text);
-          this.$store.dispatch("SEARCH_BAG_CODE", result.text);
-          this.regulares = true;
-          this.finales = true;
+          this.$store.dispatch("SEARCH_BAG_CODE", result.text).then(resp => {
+            if (Object.keys(resp).length === 0) {
+              alert("No se encontro el código en la base de datos");
+            } else {
+              this.regulares = true;
+              this.finales = true;
+            }
+          });
         })
         .catch(err => {
           alert("No Code in database");

@@ -134,7 +134,6 @@ export default {
             .dispatch("SEARCH_CODE", res.text)
             .then(resp => {
               if (Object.keys(resp).length === 0) {
-                console.log("empty -----------------");
                 alert("No se encontro el código en la base de datos");
               } else {
                 this.regulares = true;
