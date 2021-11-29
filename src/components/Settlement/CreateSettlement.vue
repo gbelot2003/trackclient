@@ -29,12 +29,7 @@
         <StackLayout row="2"></StackLayout>
 
         <StackLayout row="3">
-          <button
-            text="Guardar"
-            @tap="saveData"
-            class="btn-primary"
-            v-if="isValid"
-          ></button>
+          <button text="Guardar" @tap="saveData" class="btn-primary" v-if="isValid"></button>
           <button text="Close" @tap="closeModal"></button>
         </StackLayout>
       </GridLayout>
@@ -57,62 +52,12 @@ export default {
         name: "",
         address: "",
         department_id: "",
-        municipality_id: "",
+        municipality_id: ""
       },
       departamentos: [],
       municipios: [],
-      showMunic: false,
+      showMunic: false
     };
-  },
-
-  methods: {
-    loaded() {
-      axios.get(server + "departamentos").then((res) => {
-        this.departamentos = new ValueList(res.data);
-      });
-    },
-    SelectedDeptChange(args) {
-      let number = args.newIndex + 1;
-      this.fields.department_id = number;
-      axios.get(server + "municipios/" + number).then((res) => {
-        
-        this.showMunic = true;
-        this.municipios = new ValueList(res.data);
-        console.log(this.municipios);
-      });
-    },
-    SelectedMunicChage(args) {
-      let index = args.newIndex;
-      let muni = this.municipios._array
-      this.fields.municipality_id = muni[index].value;
-      console.log(muni[index]);
-    },
-    saveData() {
-
-      console.log(this.fields)
-      
-      axios.post(server + "agencias", this.fields).then((res) => {
-        console.log(res.data);
-        this.$store.commit("SET_AGENCIA", res.data);
-        this.$navigateTo(CreateClient, {
-          trasition: {
-            name: "slide",
-            duration: 200,
-            curve: "ease",
-          },
-          props: {
-            tipo: this.tipo,
-            fuente: this.fuente,
-          },
-        });
-        this.$modal.close();
-      });
-
-      
-    },
-    closeModal() {
-      this.$modal.close();
-    },
   },
   computed: {
     isValid() {
@@ -126,7 +71,76 @@ export default {
       }
       return true;
     },
+    getCredentials() {
+      return this.$store.getters.getAccessToken;
+    }
   },
+  methods: {
+    loaded() {
+      axios
+        .get(server + "departamentos", {
+          headers: {
+            Accept: "application/json",
+            Authorization: this.getCredentials
+          }
+        })
+        .then(res => {
+          this.departamentos = new ValueList(res.data);
+        });
+    },
+    SelectedDeptChange(args) {
+      let number = args.newIndex + 1;
+      this.fields.department_id = number;
+      axios
+        .get(server + "municipios/" + number, {
+          headers: {
+            Accept: "application/json",
+            Authorization: this.getCredentials
+          }
+        })
+        .then(res => {
+          this.showMunic = true;
+          this.municipios = new ValueList(res.data);
+          console.log(this.municipios);
+        });
+    },
+    SelectedMunicChage(args) {
+      let index = args.newIndex;
+      let muni = this.municipios._array;
+      this.fields.municipality_id = muni[index].value;
+      console.log(muni[index]);
+    },
+    saveData() {
+      console.log(this.fields);
+
+      axios
+        .post(server + "agencias", this.fields, {
+          headers: {
+            Accept: "application/json",
+            Authorization: this.getCredentials
+          }
+        })
+        .then(res => {
+          console.log(res.data);
+          this.$store.commit("SET_AGENCIA", res.data);
+          this.$navigateTo(CreateClient, {
+            trasition: {
+              name: "slide",
+              duration: 200,
+              curve: "ease"
+            },
+            props: {
+              tipo: this.tipo,
+              fuente: this.fuente
+            }
+          });
+          this.$modal.close();
+        });
+    },
+    closeModal() {
+      this.$modal.close();
+    }
+  }
 };
 </script>
 

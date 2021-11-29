@@ -10,12 +10,7 @@
         <StackLayout row="1"></StackLayout>
 
         <StackLayout row="2">
-          <button
-            text="Guardar"
-            @tap="saveData"
-            class="btn-primary"
-            v-if="isValid"
-          ></button>
+          <button text="Guardar" @tap="saveData" class="btn-primary" v-if="isValid"></button>
           <button text="Close" @tap="closeModal"></button>
         </StackLayout>
       </GridLayout>
@@ -34,44 +29,57 @@ export default {
   data() {
     return {
       fields: {
-        name: "",
-      },
+        name: ""
+      }
     };
   },
 
   methods: {
     saveData() {
-      axios.post(server + "secciones", this.fields).then((res) => {
-        console.log(res.data);
-        this.$store.commit("SET_SECCION", res.data);
-        this.$navigateTo(CreateClient, {
-          trasition: {
-            name: "slide",
-            duration: 200,
-            curve: "ease",
-          },
-          props: {
-            tipo: this.tipo,
-            fuente: this.fuente,
-          },
+      axios
+        .post(server + "secciones", this.fields, {
+          headers: {
+            Accept: "application/json",
+            Authorization: this.getCredentials
+          }
+        })
+        .then(res => {
+          console.log(res.data);
+          this.$store.commit("SET_SECCION", res.data);
+          this.$navigateTo(CreateClient, {
+            trasition: {
+              name: "slide",
+              duration: 200,
+              curve: "ease"
+            },
+            props: {
+              tipo: this.tipo,
+              fuente: this.fuente
+            }
+          });
+          this.$modal.close();
+        }).catch(err => {
+          console.log(err.response);
+          alert(err);
         });
-        this.$modal.close();
-      });
 
       //
     },
     closeModal() {
       this.$modal.close();
-    },
+    }
   },
   computed: {
+    getCredentials() {
+      return this.$store.getters.getAccessToken;
+    },
     isValid() {
       if (this.fields.name === "") {
         return false;
       }
       return true;
-    },
-  },
+    }
+  }
 };
 </script>
 

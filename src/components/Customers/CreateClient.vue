@@ -8,23 +8,12 @@
         <StackLayout row="0">
           <TextField hint="Nombre" v-model="name" class="form" />
           <TextField hint="No Identidad" v-model="identity" class="form" />
-          <button
-            text="Seleccione Agencia"
-            @tap="selectSettlement"
-            v-if="!getAgencia.name"
-          ></button>
-          <settlement-items
-            :item="getAgencia"
-            v-if="getAgencia.name"
-          ></settlement-items>
+          <button text="Seleccione Agencia" @tap="selectSettlement" v-if="!getAgencia.name"></button>
+          <settlement-items :item="getAgencia" v-if="getAgencia.name"></settlement-items>
         </StackLayout>
 
         <StackLayout row="1">
-          <button
-            text="Agregue la sección"
-            @tap="selectSection"
-            v-if="!getSeccion.name"
-          />
+          <button text="Agregue la sección" @tap="selectSection" v-if="!getSeccion.name" />
           <section-items :items="getSeccion" v-if="getSeccion.name" />
         </StackLayout>
 
@@ -53,13 +42,13 @@ export default {
   props: ["plantilla", "tipo", "fuente"],
   components: {
     SettlementItems,
-    SectionItems,
+    SectionItems
   },
   data() {
     return {
       name: "",
       identity: "",
-      items: [],
+      items: []
     };
   },
   mounted() {
@@ -71,12 +60,12 @@ export default {
         trasition: {
           name: "slide",
           duration: 200,
-          curve: "ease",
+          curve: "ease"
         },
         props: {
           tipo: this.tipo,
-          fuente: this.fuente,
-        },
+          fuente: this.fuente
+        }
       });
     },
     selectSection() {
@@ -84,12 +73,12 @@ export default {
         trasition: {
           name: "slide",
           duration: 200,
-          curve: "ease",
+          curve: "ease"
         },
         props: {
           tipo: this.tipo,
-          fuente: this.fuente,
-        },
+          fuente: this.fuente
+        }
       });
     },
     createCustomer() {
@@ -97,15 +86,21 @@ export default {
         name: this.name,
         identity: this.identity,
         settlement_id: this.getAgencia.id,
-        section_id: this.getSeccion.id,
+        section_id: this.getSeccion.id
       };
 
       axios
-        .post(server + "clientes", data)
-        .then((res) => {
+        .post(server + "clientes", data, {
+          headers: {
+            Accept: "application/json",
+            Authorization: this.getCredentials
+          }
+        })
+        .then(res => {
           data = {};
           if (this.tipo === "sender") {
             this.$store.commit("SET_REMITENTE", res.data);
+            
           } else if (this.tipo === "reciver") {
             this.$store.commit("SET_DESTINATARIO", res.data);
           }
@@ -115,20 +110,20 @@ export default {
               trasition: {
                 name: "slide",
                 duration: 200,
-                curve: "ease",
-              },
+                curve: "ease"
+              }
             });
           } else {
             this.$navigateTo(NewBags, {
               trasition: {
                 name: "slide",
                 duration: 200,
-                curve: "ease",
-              },
+                curve: "ease"
+              }
             });
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
           alert(err);
         });
@@ -139,31 +134,34 @@ export default {
           trasition: {
             name: "slide",
             duration: 200,
-            curve: "ease",
-          },
+            curve: "ease"
+          }
         });
       } else {
         this.$navigateTo(NewBags, {
           trasition: {
             name: "slide",
             duration: 200,
-            curve: "ease",
-          },
+            curve: "ease"
+          }
         });
       }
-    },
+    }
   },
   computed: {
     getAgencia() {
       return this.$store.getters.getAgencia;
+    },
+    getCredentials() {
+      return this.$store.getters.getAccessToken;
     },
     getSeccion() {
       return this.$store.getters.getSeccion;
     },
     isValid() {
       return true;
-    },
-  },
+    }
+  }
 };
 </script>
 
