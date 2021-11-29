@@ -52,13 +52,6 @@ z
           @tap="onButtonTap"
           class="btn btn-primary m-t-15"
         ></Button>
-        <Label
-          text="¿Olvidastes tu password?"
-          v-if="isLoggingIn"
-          class="login-label"
-          @tap="forgotPassword()"
-          :isEnabled="!processing"
-        ></Label>
       </StackLayout>
     </FlexboxLayout>
   </Page>
