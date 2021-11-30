@@ -10,7 +10,7 @@
         <Button class="menu-btn" text="Manejar Paquetes en Bolsa" @tap="bagsPackages"></Button>
       </StackLayout>
       <StackLayout row="1">
-        <Button class="menu-btn" text="Logout"></Button>
+        <Button class="menu-btn" text="Logout" @tap="logout" />
       </StackLayout>
     </GridLayout>
   </Page>
@@ -22,6 +22,7 @@ import Transaction from "./transits/Transaction.vue";
 import NewBag from "./Bags/NewBags.vue";
 import TransactionBagVue from "./transits/TransactionBag.vue";
 import BagsPackagesVue from "./Bags/BagsPackages.vue";
+import App from "./App.vue";
 
 export default {
   methods: {
@@ -69,6 +70,25 @@ export default {
           curve: "ease"
         }
       });
+    },
+    logout() {
+      console.log("hiter");
+      this.$store
+        .dispatch("AUTH_LOGOUT")
+        .then(resp => {
+          if (resp.data === "Logged out") {
+            this.processing = false;
+            this.$navigateTo(App);
+            alert("Ha salido del sistema")
+          } else {
+            alert(
+              "Hay algun problema en el registro de logueo, intente mas tarde"
+            );
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
