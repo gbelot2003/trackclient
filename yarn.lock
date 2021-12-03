@@ -3999,6 +3999,11 @@
   dependencies:
     "@master.technology/permissions" "latest"
 
+"nativescript-pusher@^1.0.1":
+  "integrity" "sha512-HlrUyQ8acwzkxBvXmHhyDSjIFkA+4AcQ59A1QOTqtGReHAdaJ9UHcDRQ+gl2N+Kocgsq8AiSv50f1o+oIx+0AA=="
+  "resolved" "https://registry.npmjs.org/nativescript-pusher/-/nativescript-pusher-1.0.1.tgz"
+  "version" "1.0.1"
+
 "nativescript-socket.io@^0.11.1":
   "integrity" "sha512-AJ9eLlTixlKnfkxKQ9F7mBAz4v/wozxgYyY31W8OjE+01q9HfH/jLPyn6YOm1sRUdJinH601k/21NgfLWPY0pA=="
   "resolved" "https://registry.npmjs.org/nativescript-socket.io/-/nativescript-socket.io-0.11.1.tgz"
