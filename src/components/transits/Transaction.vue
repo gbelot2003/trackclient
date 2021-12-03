@@ -59,7 +59,6 @@ const camera = require("@nativescript/camera");
 var geolocation = require("nativescript-geolocation");
 import { Accuracy } from "tns-core-modules/ui/enums";
 const dialogs = require("tns-core-modules/ui/dialogs");
-import { ValueList } from "nativescript-drop-down";
 import RegularVue from "./transits/Regular.vue";
 import FinalesVue from "./transits/Finales.vue";
 import TransitoItem from "./transits/TransitoItem.vue";

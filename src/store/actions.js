@@ -273,4 +273,24 @@ export default {
             });
         });
     },
+
+    // Bolsa con paquetes
+    FETCH_BAG_WITH_PACKAGES: ({ commit, getters }, params) => {
+        return new Promise((resolve, reject) => {
+            let string = `${server}packages-to-bag/${params}`;
+            //console.log(params)
+            axios.get(string, {
+                headers: {
+                    Authorization: getters.getAccessToken
+                }
+            }).then(res => {
+                resolve(res.data)
+            }).catch(err => {
+                reject(err)
+                console.log(err.response.status);
+                console.log(err.response.statusText);
+                console.log(err.response);
+            });
+        });
+    },
 }

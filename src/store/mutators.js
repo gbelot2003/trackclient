@@ -140,4 +140,8 @@ export default {
     UNSET_TRANSITO(state) {
         state.transito = ''
     },
+
+    SET_BAGPACKAGES(state, payload) {
+        state.bagPackages = payload
+    }
 }

@@ -87,4 +87,8 @@ export default {
         return state.transito
     },
 
+    getBagPackages(state){
+        return state.bagPackage
+    }
+
 }

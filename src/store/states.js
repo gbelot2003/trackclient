@@ -24,5 +24,6 @@ export default {
     secciones: [],
     seccion: {},
     transito: '',
+    bagPackage: [],
 
 }
