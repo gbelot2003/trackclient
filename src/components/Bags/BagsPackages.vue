@@ -151,11 +151,18 @@ export default {
             latitude: this.latitude
           };
 
-          axios.post(`${server}packages-to-bag`, datos).then(res => {
-            const channel = socket.subscribe(`channel-${r.text}`);
-            channel.bind("NewMessage", () => console.log("oyendo"));
-            this.render(this.bagcode);
-          });
+          axios
+            .post(`${server}packages-to-bag`, datos, {
+              headers: {
+                Accept: "application/json",
+                Authorization: this.getCredentials
+              }
+            })
+            .then(res => {
+              const channel = socket.subscribe(`channel-${r.text}`);
+              channel.bind("NewMessage", () => console.log("oyendo"));
+              this.render(this.bagcode);
+            });
         })
         .catch(error => {
           console.error(error);
@@ -238,9 +245,16 @@ export default {
             latitude: this.latitude
           };
           console.log(datos);
-          axios.post(`${server}package-remove-bag`, datos).then(res => {
-            this.render(this.bagcode);
-          });
+          axios
+            .post(`${server}package-remove-bag`, datos, {
+              headers: {
+                Accept: "application/json",
+                Authorization: this.getCredentials
+              }
+            })
+            .then(res => {
+              this.render(this.bagcode);
+            });
         }
       });
     },
@@ -257,6 +271,9 @@ export default {
   computed: {
     getPackages() {
       return this.$store.getters.getBagPackages;
+    },
+    getCredentials() {
+      return this.$store.getters.getAccessToken;
     }
   },
   mounted() {
