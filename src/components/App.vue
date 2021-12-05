@@ -64,9 +64,9 @@ import Home from './Home.vue'
 export default {
   data() {
     return {
-      email: "gbelot2003@hotmail.com",
-      password: "password",
-      confirmPassword: "password",
+      email: "",
+      password: "",
+      confirmPassword: "",
       processing: false,
       isLoggingIn: true,
     }

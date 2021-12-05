@@ -196,11 +196,14 @@ export default {
         })
         .then(result => {
           // Cambiar accion por la necesaria
-          this.code = result.text;
+          const channel = socket.subscribe(`channel-${result.text}`);
+          channel.bind("NewMessage", () => {
+            console.log("oyendo");
+            this.render(result.text);
+          });
         })
-        .catch(err => {
-          alert("No Code in database");
-          console.log("No scan. " + err);
+        .catch(error => {
+          console.error(error);
         });
     },
     scan2(preferFrontCamera, showFlipCameraButton) {
@@ -222,8 +225,27 @@ export default {
         })
         .then(result => {
           // Cambiar accion por la necesaria
-          this.code = result.text;
-          console.log("scan2");
+
+          const datos = {
+            bag: this.bagcode,
+            code: r.text,
+            longitude: this.longitude,
+            latitude: this.latitude
+          };
+          axios
+            .post(`${server}packages-to-bag`, datos, {
+              headers: {
+                Accept: "application/json",
+                Authorization: this.getCredentials
+              }
+            })
+            .then(res => {
+              const channel = socket.subscribe(`channel-${r.text}`);
+              channel.bind("NewMessage", () => console.log("oyendo"));
+              this.render(this.bagcode);
+            }).catch(e => {
+              console.log(e)
+            })
         })
         .catch(err => {
           alert("No Code in database");
