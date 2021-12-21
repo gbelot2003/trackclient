@@ -15,7 +15,12 @@
           @scanResult="onScanResult"
           v-if="isIOS"
         />
-        <Button class="scan" text="Scan Código" width="140" @tap="doScanWithBackCameraWithFlip" />
+        <Button
+          class="scan"
+          text="Scan Código"
+          width="140"
+          @tap="doScanWithBackCameraWithFlip"
+        />
         <label
           class="code"
           text
@@ -25,7 +30,7 @@
         />
         <Button class="auto" text="manu" width="50" @tap="manualCode" />
       </StackLayout>
-      <GridLayout rows="auto, auto" columns="*,*">
+      <!-- <GridLayout rows="auto, auto" columns="*,*">
         <customers-item row="0" column="0" :item="getSender" title="Emisor" v-if="getBag.code" />
         <customers-item
           row="0"
@@ -34,17 +39,40 @@
           title="Destinatario"
           v-if="getBag.code"
         />
-      </GridLayout>
+      </GridLayout> -->
+      <ScrollView height="200">
+        <ListView height="200" for="item in items">
+          <v-template>
+            <StackLayout>
+              <Label :text="item.code" />
+            </StackLayout>
+          </v-template>
+        </ListView>
+      </ScrollView>
       <StackLayout>
         <Button text="Transitos Normales" @tap="bregulares" v-if="regulares" />.
         <Button text="Transitos Finales" @tap="bfinales" v-if="finales" />
       </StackLayout>
       <StackLayout>
-        <transito-item :item="getTransito" v-if="getTransito" v-on:choice="showChoices" />
+        <transito-item
+          :item="getTransito"
+          v-if="getTransito"
+          v-on:choice="showChoices"
+        />
       </StackLayout>
       <StackLayout>
-        <TextView v-if="getTransito" class="form" hint="Detalles" v-model="details" />
-        <Button v-if="getTransito" text="Registras" class="btn-primary" @tap="SubmitPackage" />
+        <TextView
+          v-if="getTransito"
+          class="form"
+          hint="Detalles"
+          v-model="details"
+        />
+        <Button
+          v-if="getTransito"
+          text="Registras"
+          class="btn-primary"
+          @tap="SubmitPackage"
+        />
         <Button v-if="getTransito" text="Cancelar" @tap="clear" />
       </StackLayout>
     </StackLayout>
@@ -73,7 +101,8 @@ export default {
       regulares: false,
       finales: false,
       latitude: "",
-      longitude: ""
+      longitude: "",
+      items: [],
     };
   },
   mounted() {
@@ -83,7 +112,7 @@ export default {
   },
   components: {
     CustomersItem,
-    TransitoItem
+    TransitoItem,
   },
   computed: {
     getBag() {
@@ -103,17 +132,18 @@ export default {
     },
     getCredentials() {
       return this.$store.getters.getAccessToken;
-    }
+    },
   },
 
   methods: {
     SubmitPackage() {
       let data = {
+        codes: this.items,
         bag_id: this.getBag.id,
         longitude: this.longitude,
         latitude: this.latitude,
         state_id: this.getTransito.id,
-        details: this.details
+        details: this.details,
       };
 
       console.log(data);
@@ -122,14 +152,14 @@ export default {
         .post(server + "transitos-bolsas", data, {
           headers: {
             Accept: "application/json",
-            Authorization: this.getCredentials
-          }
+            Authorization: this.getCredentials,
+          },
         })
-        .then(res => {
+        .then((res) => {
           console.log(res.data);
           this.exitModal();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           //this.exitModal();
           alert(
@@ -138,7 +168,7 @@ export default {
         });
     },
     bregulares() {
-      this.$showModal(RegularVue, { fullscreen: true }).then(res => {
+      this.$showModal(RegularVue, { fullscreen: true }).then((res) => {
         if (res !== "close") {
           this.regulares = false;
           this.finales = false;
@@ -146,7 +176,7 @@ export default {
       });
     },
     bfinales() {
-      this.$showModal(FinalesVue, { fullscreen: true }).then(res => {
+      this.$showModal(FinalesVue, { fullscreen: true }).then((res) => {
         if (res !== "close") {
           this.regulares = false;
           this.finales = false;
@@ -159,19 +189,20 @@ export default {
         message: "Agrega el Numero de código manual",
         okButtonText: "Enviar",
         cancelButtonText: "Cancelar",
-        inputType: dialogs.inputType.number
+        inputType: dialogs.inputType.number,
       })
-        .then(res => {
-          this.$store.dispatch("SEARCH_BAG_CODE", res.text).then(resp => {
+        .then((res) => {
+          this.$store.dispatch("SEARCH_BAG_CODE", res.text).then((resp) => {
             if (Object.keys(resp).length === 0) {
               alert("No se encontro el código en la base de datos");
             } else {
+              this.items.push({ id: resp.id, code: resp.code });
               this.regulares = true;
               this.finales = true;
             }
           });
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
@@ -201,20 +232,21 @@ export default {
           openSettingsIfPermissionWasPreviouslyDenied: true, // On iOS you can send the user to the settings app if access was previously denied
           closeCallback: () => {
             console.log("Scanner closed @ " + new Date().getTime());
-          }
+          },
         })
-        .then(result => {
+        .then((result) => {
           // Cambiar accion por la necesaria
-          this.$store.dispatch("SEARCH_BAG_CODE", result.text).then(resp => {
+          this.$store.dispatch("SEARCH_BAG_CODE", result.text).then((resp) => {
             if (Object.keys(resp).length === 0) {
               alert("No se encontro el código en la base de datos");
             } else {
+              this.items.push({ id: resp.id, code: resp.code });
               this.regulares = true;
               this.finales = true;
             }
           });
         })
-        .catch(err => {
+        .catch((err) => {
           alert("No Code in database");
           console.log("No scan. " + err);
         });
@@ -225,9 +257,9 @@ export default {
           .getCurrentLocation({
             desiredAccuracy: Accuracy.high,
             maximumAge: 5000,
-            timeout: 20000
+            timeout: 20000,
           })
-          .then(res => {
+          .then((res) => {
             let that = this;
             this.latitude = res.latitude;
             this.longitude = res.longitude;
@@ -235,7 +267,7 @@ export default {
       }, 2000);
     },
     exitModal() {
-      this.$showModal(Exit).then(res => {
+      this.$showModal(Exit).then((res) => {
         if (res === "continuar") {
           this.clear();
         } else {
@@ -251,17 +283,18 @@ export default {
       this.detalles = "";
       this.latitude = "";
       this.longitude = "";
+      this.items = [];
     },
     barBack() {
       this.$navigateTo(Home, {
         trasition: {
           name: "slide",
           duration: 200,
-          curve: "ease"
-        }
+          curve: "ease",
+        },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
