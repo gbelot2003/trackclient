@@ -42,11 +42,16 @@ export default {
     },
 
     SET_PACKAGE(state, payload) {
-        state.package = payload;
+        state.package = payload
     },
 
     UNSET_PACKAGE(state) {
         state.package = {}
+    },
+
+    PUSH_CODEARRAY(state, payload) {
+        console.log("llega")
+        state.codeArray.push(payload)
     },
 
     SET_BAG(state, payload) {

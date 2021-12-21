@@ -9,6 +9,7 @@ export default {
         longitude: ''
     },
     code: 0,
+    codeArray: [],
     package: {},
     bag: {},
     clientes: {},
