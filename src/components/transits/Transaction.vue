@@ -162,7 +162,6 @@ export default {
         inputType: dialogs.inputType.number,
       })
         .then((res) => {
-
           /* verificar estado de pquete */
           this.$store
             .dispatch("SEARCH_CODE", res.text)
@@ -170,7 +169,18 @@ export default {
               if (Object.keys(resp).length === 0) {
                 alert("No se encontro el código en la base de datos");
               } else {
-                this.items.push({id: resp.id, code: resp.code});
+                if (
+                  resp.transaction.state_id === 8 ||
+                  resp.transaction.state_id === 9 ||
+                  resp.transaction.state_id === 11 ||
+                  resp.transaction.state_id === 12 ||
+                  resp.transaction.state_id === 13
+                ) {
+                  alert("El numero de paquete aparece cerrado");
+                  return;
+                }
+
+                this.items.push({ id: resp.id, code: resp.code });
                 this.regulares = true;
                 this.finales = true;
               }
@@ -238,7 +248,17 @@ export default {
               if (Object.keys(resp).length === 0) {
                 alert("No se encontro el código en la base de datos");
               } else {
-                this.items.push({id: resp.id, code: resp.code});
+                if (
+                  resp.transaction.state_id === 8 ||
+                  resp.transaction.state_id === 9 ||
+                  resp.transaction.state_id === 11 ||
+                  resp.transaction.state_id === 12 ||
+                  resp.transaction.state_id === 13
+                ) {
+                  alert("El numero de paquete aparece cerrado");
+                  return;
+                }
+                this.items.push({ id: resp.id, code: resp.code });
                 this.regulares = true;
                 this.finales = true;
               }
