@@ -27,7 +27,12 @@
       </StackLayout>
 
       <GridLayout rows="auto, auto" columns="*,*">
-        <customers-item row="0" column="0" :item="getSender" title="Emisor" v-if="getPackage.code" />
+        <customers-item 
+          row="0" 
+          column="0" 
+          :item="getSender" 
+          title="Emisor" 
+          v-if="getPackage.code" />
         <customers-item
           row="0"
           column="1"
@@ -98,8 +103,6 @@ export default {
         details: this.details
       };
 
-      console.log(data);
-
       axios
         .post(server + "transitos", data, {
           headers: {
@@ -129,6 +132,8 @@ export default {
       })
         .then(res => {
           console.log(res);
+          /* verificar estado de pquete */
+
           this.$store
             .dispatch("SEARCH_CODE", res.text)
             .then(resp => {
@@ -147,6 +152,7 @@ export default {
           console.log(e);
         });
     },
+
     bregulares() {
       this.$showModal(RegularVue, { fullscreen: true }).then(res => {
         if (res !== "close") {
@@ -163,6 +169,7 @@ export default {
         }
       });
     },
+
     showChoices() {
       this.regulares = true;
       this.finales = true;
@@ -193,7 +200,7 @@ export default {
         })
         .then(result => {
           // Cambiar accion por la necesaria
-
+          // verificar estado de paquetes
           this.$store
             .dispatch("SEARCH_CODE", result.text)
             .then(resp => {
@@ -212,6 +219,7 @@ export default {
           alert("No Code in database");
           console.log("No scan. " + err);
         });
+
     },
     barBack() {
       this.$navigateTo(Home, {
