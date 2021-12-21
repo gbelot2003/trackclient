@@ -27,6 +27,10 @@ export default {
         return state.code;
     },
 
+    getCodeArray(state) {
+        return state.codeArray
+    },
+
     getPackage(state) {
         return state.package
     },
